@@ -8,7 +8,14 @@
 	let { children, data } = $props();
 
 	$effect(() => {
-		initFromServer(data.serverParticipants, data.serverState, data.serverDraftedMap);
+		initFromServer(
+			data.serverParticipants,
+			data.serverState,
+			data.serverDraftedMap,
+			data.serverPlayers,
+			data.serverWtaPlayers,
+			data.serverTournament
+		);
 	});
 
 	const navItems = [
@@ -40,7 +47,7 @@
 		</nav>
 	</aside>
 
-	<!-- Mobile Nav (Simple placeholder for now) -->
+	<!-- Mobile Nav -->
 	<div class="md:hidden absolute top-0 left-0 p-4">
 		<!-- TODO: Mobile Menu -->
 	</div>

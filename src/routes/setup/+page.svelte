@@ -1,11 +1,13 @@
 <script lang="ts">
 	import {
 		participants,
+		activeTournament,
 		addParticipant,
 		removeParticipant,
 		shuffleParticipants,
 		startDraft,
-		resetDraft
+		resetDraft,
+		selectTournament
 	} from '$lib/stores/draftStore';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
@@ -18,14 +20,16 @@
 		CardDescription
 	} from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
-	import { Separator } from '$lib/components/ui/separator';
 	import { Avatar, AvatarFallback } from '$lib/components/ui/avatar';
-	import { Trash2, Shuffle, Play, Plus, RefreshCcw } from '@lucide/svelte';
+	import { Trash2, Shuffle, Play, Plus, RefreshCcw, Check } from '@lucide/svelte';
 	import { goto } from '$app/navigation';
+	import { TOURNAMENT_CATALOG } from '$lib/data/tournaments';
+	import SyncButton from '$lib/components/SyncButton.svelte';
 
 	let name = $state('');
 	let teamName = $state('');
 	let selectedIcon = $state('🎾');
+	let selectingYear = $state(new Date().getFullYear());
 
 	const icons = ['🎾', '🏆', '🚀', '⭐', '🔥', '⚡', '🦁', '🦅', '🦈', '🐻'];
 
@@ -40,13 +44,21 @@
 		startDraft();
 		goto('/draft');
 	}
+
+	async function handleSelectTournament(catalogId: string) {
+		await selectTournament(catalogId, selectingYear);
+	}
+
+	const currentCatalogId = $derived(
+		$activeTournament ? $activeTournament.id.split('-').slice(0, -2).join('-') : null
+	);
 </script>
 
 <div class="space-y-8">
 	<div class="flex justify-between items-center">
 		<div>
 			<h2 class="text-3xl font-bold tracking-tight">Draft Setup</h2>
-			<p class="text-muted-foreground">Add participants and configure the draft order.</p>
+			<p class="text-muted-foreground">Select a tournament, add participants, and start the draft.</p>
 		</div>
 		<div class="flex gap-2">
 			<Button variant="outline" size="icon" onclick={resetDraft} title="Reset All">
@@ -56,11 +68,93 @@
 				<Shuffle class="mr-2 h-4 w-4" />
 				Shuffle Order
 			</Button>
-			<Button onclick={handleStart} disabled={$participants.length < 2}>
+			<Button onclick={handleStart} disabled={$participants.length < 2 || !$activeTournament}>
 				<Play class="mr-2 h-4 w-4" />
 				Start Draft
 			</Button>
 		</div>
+	</div>
+
+	<!-- Tournament Selection -->
+	<div class="space-y-4">
+		<div class="flex items-center justify-between">
+			<div>
+				<h3 class="text-xl font-semibold">Tournament</h3>
+				<p class="text-sm text-muted-foreground">Choose the tournament for this draft.</p>
+			</div>
+			<div class="flex items-center gap-3">
+				<Label for="year" class="text-sm">Year</Label>
+				<Input
+					id="year"
+					type="number"
+					bind:value={selectingYear}
+					min={2024}
+					max={2030}
+					class="w-24"
+				/>
+				{#if $activeTournament}
+					<SyncButton
+						tournamentId={$activeTournament.id}
+						wtaTournamentId={$activeTournament.id.replace(/-atp$/, '-wta')}
+					/>
+				{/if}
+			</div>
+		</div>
+
+		<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+			{#each TOURNAMENT_CATALOG as entry}
+				{@const isSelected = currentCatalogId === entry.id && $activeTournament?.year === selectingYear}
+				<button
+					onclick={() => handleSelectTournament(entry.id)}
+					class="relative text-left p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md
+						{isSelected
+						? 'border-primary bg-primary/5'
+						: 'border-border bg-card hover:border-primary/50'}"
+				>
+					{#if isSelected}
+						<div class="absolute top-2 right-2">
+							<Check class="h-4 w-4 text-primary" />
+						</div>
+					{/if}
+					<div class="space-y-1.5">
+						<p class="font-semibold text-sm leading-tight">{entry.name}</p>
+						<div class="flex flex-wrap gap-1">
+							<Badge variant="outline" class="text-[10px] px-1.5 py-0">{entry.surface}</Badge>
+							<Badge
+								variant={entry.tourType === 'slam' ? 'secondary' : 'outline'}
+								class="text-[10px] px-1.5 py-0"
+							>
+								{entry.tourType === 'slam' ? 'Grand Slam' : 'Masters'}
+							</Badge>
+						</div>
+						<p class="text-xs text-muted-foreground">{entry.month}</p>
+					</div>
+				</button>
+			{/each}
+		</div>
+
+		{#if $activeTournament}
+			<div class="flex items-center gap-2 text-sm text-muted-foreground">
+				<Check class="h-4 w-4 text-green-500" />
+				<span>
+					Selected: <strong class="text-foreground"
+						>{$activeTournament.name} {$activeTournament.year}</strong
+					>
+					— Rounds 1–5 ATP · Round 6 WTA
+				</span>
+				{#if !$activeTournament.apiId}
+					<Badge variant="outline" class="text-[10px]">No live data</Badge>
+				{:else if $activeTournament.lastSyncedAt}
+					<Badge variant="secondary" class="text-[10px]">
+						Synced {new Date($activeTournament.lastSyncedAt).toLocaleDateString()}
+					</Badge>
+				{/if}
+			</div>
+		{:else}
+			<p class="text-sm text-amber-600 dark:text-amber-400">
+				Select a tournament above before starting the draft.
+			</p>
+		{/if}
 	</div>
 
 	<div class="grid gap-6 md:grid-cols-2">

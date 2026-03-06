@@ -7,7 +7,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 1,
         country: 'Spain',
         image: 'https://ausopen.com/sites/default/files/trading-cards/2026/jc2_1556-1.jpg',
-        points: 12050,
         currentRanking: 1
     },
     {
@@ -16,7 +15,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=AW',
-        points: 727,
         currentRanking: 81
     },
     {
@@ -25,7 +23,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Germany',
         image: 'https://placehold.co/150?text=YH',
-        points: 611,
         currentRanking: 102
     },
     {
@@ -34,7 +31,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=ZS',
-        points: 431,
         currentRanking: 143
     },
     {
@@ -43,7 +39,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=MZ',
-        points: 337,
         currentRanking: 174
     },
     {
@@ -52,7 +47,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=SK',
-        points: 975,
         currentRanking: 53
     },
     {
@@ -61,7 +55,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=TS',
-        points: 641,
         currentRanking: 98
     },
     {
@@ -70,7 +63,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 32,
         country: 'France',
         image: 'https://placehold.co/150?text=CM',
-        points: 1383,
         currentRanking: 37
     },
     {
@@ -79,7 +71,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 19,
         country: 'USA',
         image: 'https://placehold.co/150?text=TP',
-        points: 2050,
         currentRanking: 20
     },
     {
@@ -88,7 +79,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=AK',
-        points: 964,
         currentRanking: 56
     },
     {
@@ -97,7 +87,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=TT',
-        points: 0,
         currentRanking: null
     },
     {
@@ -106,7 +95,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=AV',
-        points: 746,
         currentRanking: 78
     },
     {
@@ -115,7 +103,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Norway',
         image: 'https://placehold.co/150?text=NBK',
-        points: 446,
         currentRanking: 135
     },
     {
@@ -124,7 +111,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=RO',
-        points: 873,
         currentRanking: 63
     },
     {
@@ -133,7 +119,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Austria',
         image: 'https://placehold.co/150?text=FM',
-        points: 725,
         currentRanking: 84
     },
     {
@@ -142,7 +127,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 14,
         country: 'Spain',
         image: 'https://placehold.co/150?text=ADF',
-        points: 2635,
         currentRanking: 14
     },
     {
@@ -151,7 +135,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 10,
         country: 'Kazakhstan',
         image: 'https://placehold.co/150?text=AB',
-        points: 3065,
         currentRanking: 10
     },
     {
@@ -160,7 +143,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=JB',
-        points: 1042,
         currentRanking: 48
     },
     {
@@ -169,7 +151,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=CUC',
-        points: 1028,
         currentRanking: 49
     },
     {
@@ -178,7 +159,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Hungary',
         image: 'https://placehold.co/150?text=MF',
-        points: 967,
         currentRanking: 54
     },
     {
@@ -187,7 +167,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Serbia',
         image: 'https://placehold.co/150?text=MK',
-        points: 910,
         currentRanking: 60
     },
     {
@@ -196,7 +175,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=TE',
-        points: 0,
         currentRanking: null
     },
     {
@@ -205,7 +183,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'UK',
         image: 'https://placehold.co/150?text=AF',
-        points: 316,
         currentRanking: 186
     },
     {
@@ -214,7 +191,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 20,
         country: 'Italy',
         image: 'https://placehold.co/150?text=FC',
-        points: 1955,
         currentRanking: 22
     },
     {
@@ -223,7 +199,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 29,
         country: 'USA',
         image: 'https://placehold.co/150?text=FT',
-        points: 1500,
         currentRanking: 33
     },
     {
@@ -232,7 +207,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=JK',
-        points: 305,
         currentRanking: 193
     },
     {
@@ -241,7 +215,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=PK',
-        points: 527,
         currentRanking: 116
     },
     {
@@ -250,7 +223,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=FC',
-        points: 829,
         currentRanking: 68
     },
     {
@@ -259,7 +231,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=MN',
-        points: 760,
         currentRanking: 74
     },
     {
@@ -268,7 +239,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Serbia',
         image: 'https://placehold.co/150?text=HM',
-        points: 681,
         currentRanking: 90
     },
     {
@@ -277,7 +247,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Italy',
         image: 'https://placehold.co/150?text=MB',
-        points: 945,
         currentRanking: 57
     },
     {
@@ -286,7 +255,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 6,
         country: 'Australia',
         image: 'https://placehold.co/150?text=ADM',
-        points: 4080,
         currentRanking: 6
     },
     {
@@ -295,7 +263,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 3,
         country: 'Germany',
         image: 'https://placehold.co/150?text=AZ',
-        points: 5105,
         currentRanking: 3
     },
     {
@@ -304,7 +271,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Canada',
         image: 'https://placehold.co/150?text=GD',
-        points: 1215,
         currentRanking: 41
     },
     {
@@ -313,7 +279,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=AP',
-        points: 1000,
         currentRanking: 50
     },
     {
@@ -322,7 +287,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=AM',
-        points: 980,
         currentRanking: 52
     },
     {
@@ -331,7 +295,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=EN',
-        points: 683,
         currentRanking: 89
     },
     {
@@ -340,7 +303,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=KJ',
-        points: 477,
         currentRanking: 128
     },
     {
@@ -349,7 +311,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=BB',
-        points: 566,
         currentRanking: 106
     },
     {
@@ -358,7 +319,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 26,
         country: 'UK',
         image: 'https://placehold.co/150?text=CN',
-        points: 1553,
         currentRanking: 26
     },
     {
@@ -367,7 +327,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 18,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=FC',
-        points: 2035,
         currentRanking: 21
     },
     {
@@ -376,7 +335,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'China',
         image: 'https://placehold.co/150?text=ZZ',
-        points: 130,
         currentRanking: 368
     },
     {
@@ -385,7 +343,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Canada',
         image: 'https://placehold.co/150?text=LD',
-        points: 429,
         currentRanking: 145
     },
     {
@@ -394,7 +351,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Bosnia And Herzegovina',
         image: 'https://placehold.co/150?text=DD',
-        points: 837,
         currentRanking: 66
     },
     {
@@ -403,7 +359,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=AC',
-        points: 830,
         currentRanking: 67
     },
     {
@@ -412,7 +367,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Portugal',
         image: 'https://placehold.co/150?text=JF',
-        points: 413,
         currentRanking: 151
     },
     {
@@ -421,7 +375,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Italy',
         image: 'https://placehold.co/150?text=MA',
-        points: 858,
         currentRanking: 65
     },
     {
@@ -430,7 +383,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 13,
         country: 'Andrey Rublev\'><span class=\'player Flag 2021\'\n                                style=\'background Image: url(&quot;',
         image: 'https://placehold.co/150?text=AR',
-        points: 2600,
         currentRanking: 15
     },
     {
@@ -439,7 +391,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 11,
         country: 'Daniil Medvedev\'><span class=\'player Flag 2021\'\n                                style=\'background Image: url(&quot;',
         image: 'https://placehold.co/150?text=DM',
-        points: 2910,
         currentRanking: 12
     },
     {
@@ -448,7 +399,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Netherlands',
         image: 'https://placehold.co/150?text=JDJ',
-        points: 763,
         currentRanking: 73
     },
     {
@@ -457,7 +407,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=QH',
-        points: 725,
         currentRanking: 83
     },
     {
@@ -466,7 +415,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Chile',
         image: 'https://placehold.co/150?text=AT',
-        points: 737,
         currentRanking: 79
     },
     {
@@ -475,7 +423,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Poland',
         image: 'https://placehold.co/150?text=KM',
-        points: 918,
         currentRanking: 59
     },
     {
@@ -484,7 +431,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'UK',
         image: 'https://placehold.co/150?text=JF',
-        points: 752,
         currentRanking: 77
     },
     {
@@ -493,7 +439,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Hungary',
         image: 'https://placehold.co/150?text=FM',
-        points: 1065,
         currentRanking: 47
     },
     {
@@ -502,7 +447,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 24,
         country: 'France',
         image: 'https://placehold.co/150?text=AR',
-        points: 1551,
         currentRanking: 27
     },
     {
@@ -511,7 +455,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 25,
         country: 'USA',
         image: 'https://placehold.co/150?text=LT',
-        points: 1540,
         currentRanking: 28
     },
     {
@@ -520,7 +463,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=MG',
-        points: 985,
         currentRanking: 51
     },
     {
@@ -529,7 +471,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Sweden',
         image: 'https://placehold.co/150?text=EY',
-        points: 337,
         currentRanking: 175
     },
     {
@@ -538,7 +479,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Kazakhstan',
         image: 'https://placehold.co/150?text=AS',
-        points: 650,
         currentRanking: 97
     },
     {
@@ -547,7 +487,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=JC',
-        points: 0,
         currentRanking: null
     },
     {
@@ -556,7 +495,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=JT',
-        points: 548,
         currentRanking: 111
     },
     {
@@ -565,7 +503,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Portugal',
         image: 'https://placehold.co/150?text=NB',
-        points: 1070,
         currentRanking: 46
     },
     {
@@ -574,7 +511,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 7,
         country: 'Canada',
         image: 'https://placehold.co/150?text=FA',
-        points: 3990,
         currentRanking: 8
     },
     {
@@ -583,7 +519,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 5,
         country: 'Italy',
         image: 'https://placehold.co/150?text=LM',
-        points: 4105,
         currentRanking: 5
     },
     {
@@ -592,7 +527,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Belgium',
         image: 'https://placehold.co/150?text=RC',
-        points: 767,
         currentRanking: 72
     },
     {
@@ -601,7 +535,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Italy',
         image: 'https://placehold.co/150?text=LS',
-        points: 1240,
         currentRanking: 40
     },
     {
@@ -610,7 +543,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Spain',
         image: 'https://placehold.co/150?text=CT',
-        points: 630,
         currentRanking: 99
     },
     {
@@ -619,7 +551,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Bulgaria',
         image: 'https://placehold.co/150?text=GD',
-        points: 1105,
         currentRanking: 45
     },
     {
@@ -628,7 +559,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Czech Republic',
         image: 'https://placehold.co/150?text=TM',
-        points: 1525,
         currentRanking: 30
     },
     {
@@ -637,7 +567,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Japan',
         image: 'https://placehold.co/150?text=SM',
-        points: 547,
         currentRanking: 112
     },
     {
@@ -646,7 +575,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 31,
         country: 'Greece',
         image: 'https://placehold.co/150?text=ST',
-        points: 1455,
         currentRanking: 34
     },
     {
@@ -655,7 +583,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 17,
         country: 'Czech Republic',
         image: 'https://placehold.co/150?text=JL',
-        points: 2090,
         currentRanking: 19
     },
     {
@@ -664,7 +591,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=AG',
-        points: 300,
         currentRanking: 197
     },
     {
@@ -673,7 +599,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Serbia',
         image: 'https://placehold.co/150?text=LD',
-        points: 659,
         currentRanking: 92
     },
     {
@@ -682,7 +607,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Switzerland',
         image: 'https://placehold.co/150?text=SW',
-        points: 437,
         currentRanking: 139
     },
     {
@@ -691,7 +615,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Czech Republic',
         image: 'https://placehold.co/150?text=VK',
-        points: 626,
         currentRanking: 101
     },
     {
@@ -700,7 +623,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Germany',
         image: 'https://placehold.co/150?text=JS',
-        points: 0,
         currentRanking: null
     },
     {
@@ -709,7 +631,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=VR',
-        points: 924,
         currentRanking: 58
     },
     {
@@ -718,7 +639,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 9,
         country: 'USA',
         image: 'https://placehold.co/150?text=TF',
-        points: 3840,
         currentRanking: 9
     },
     {
@@ -727,7 +647,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 16,
         country: 'Czech Republic',
         image: 'https://placehold.co/150?text=JM',
-        points: 2260,
         currentRanking: 18
     },
     {
@@ -736,7 +655,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Spain',
         image: 'https://placehold.co/150?text=PCB',
-        points: 656,
         currentRanking: 94
     },
     {
@@ -745,7 +663,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Japan',
         image: 'https://placehold.co/150?text=RS',
-        points: 292,
         currentRanking: 202
     },
     {
@@ -754,7 +671,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Spain',
         image: 'https://placehold.co/150?text=RJ',
-        points: 418,
         currentRanking: 150
     },
     {
@@ -763,7 +679,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Poland',
         image: 'https://placehold.co/150?text=HH',
-        points: 965,
         currentRanking: 55
     },
     {
@@ -772,7 +687,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Belgium',
         image: 'https://placehold.co/150?text=ZB',
-        points: 1170,
         currentRanking: 43
     },
     {
@@ -781,7 +695,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=EQ',
-        points: 733,
         currentRanking: 80
     },
     {
@@ -790,7 +703,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 23,
         country: 'Netherlands',
         image: 'https://placehold.co/150?text=TG',
-        points: 1565,
         currentRanking: 25
     },
     {
@@ -799,7 +711,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 27,
         country: 'USA',
         image: 'https://placehold.co/150?text=BN',
-        points: 1535,
         currentRanking: 29
     },
     {
@@ -808,7 +719,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Netherlands',
         image: 'https://placehold.co/150?text=BVD',
-        points: 759,
         currentRanking: 75
     },
     {
@@ -817,7 +727,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'China',
         image: 'https://placehold.co/150?text=JS',
-        points: 165,
         currentRanking: 317
     },
     {
@@ -826,7 +735,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Spain',
         image: 'https://placehold.co/150?text=RBA',
-        points: 670,
         currentRanking: 91
     },
     {
@@ -835,7 +743,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=TA',
-        points: 862,
         currentRanking: 64
     },
     {
@@ -844,7 +751,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Italy',
         image: 'https://placehold.co/150?text=FM',
-        points: 436,
         currentRanking: 141
     },
     {
@@ -853,7 +759,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Spain',
         image: 'https://placehold.co/150?text=PM',
-        points: 768,
         currentRanking: 71
     },
     {
@@ -862,7 +767,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 4,
         country: 'Serbia',
         image: 'https://placehold.co/150?text=ND',
-        points: 4780,
         currentRanking: 4
     },
     {
@@ -871,7 +775,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 8,
         country: 'USA',
         image: 'https://placehold.co/150?text=BS',
-        points: 4000,
         currentRanking: 7
     },
     {
@@ -880,7 +783,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=UH',
-        points: 1445,
         currentRanking: 35
     },
     {
@@ -889,7 +791,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=DS',
-        points: 325,
         currentRanking: 182
     },
     {
@@ -898,7 +799,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=GM',
-        points: 550,
         currentRanking: 110
     },
     {
@@ -907,7 +807,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=AM',
-        points: 810,
         currentRanking: 69
     },
     {
@@ -916,7 +815,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=RH',
-        points: 542,
         currentRanking: 114
     },
     {
@@ -925,7 +823,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=MD',
-        points: 333,
         currentRanking: 177
     },
     {
@@ -934,7 +831,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 30,
         country: 'Monaco',
         image: 'https://placehold.co/150?text=VV',
-        points: 1519,
         currentRanking: 31
     },
     {
@@ -943,7 +839,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 21,
         country: 'Canada',
         image: 'https://placehold.co/150?text=DS',
-        points: 1650,
         currentRanking: 23
     },
     {
@@ -952,7 +847,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'China',
         image: 'https://placehold.co/150?text=YB',
-        points: 499,
         currentRanking: 120
     },
     {
@@ -961,7 +855,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Germany',
         image: 'https://placehold.co/150?text=DA',
-        points: 1123,
         currentRanking: 44
     },
     {
@@ -970,7 +863,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Croatia',
         image: 'https://placehold.co/150?text=MC',
-        points: 790,
         currentRanking: 70
     },
     {
@@ -979,7 +871,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Spain',
         image: 'https://placehold.co/150?text=JM',
-        points: 1335,
         currentRanking: 39
     },
     {
@@ -988,7 +879,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Czech Republic',
         image: 'https://placehold.co/150?text=DS',
-        points: 655,
         currentRanking: 95
     },
     {
@@ -997,7 +887,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Italy',
         image: 'https://placehold.co/150?text=MB',
-        points: 758,
         currentRanking: 76
     },
     {
@@ -1006,7 +895,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 12,
         country: 'Norway',
         image: 'https://placehold.co/150?text=CR',
-        points: 2795,
         currentRanking: 13
     },
     {
@@ -1015,7 +903,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 15,
         country: 'Karen Khachanov\'><span class=\'player Flag 2021\'\n                                style=\'background Image: url(&quot;',
         image: 'https://placehold.co/150?text=KK',
-        points: 2320,
         currentRanking: 17
     },
     {
@@ -1024,7 +911,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=AM',
-        points: 1350,
         currentRanking: 38
     },
     {
@@ -1033,7 +919,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=CO',
-        points: 521,
         currentRanking: 118
     },
     {
@@ -1042,7 +927,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=NB',
-        points: 230,
         currentRanking: 242
     },
     {
@@ -1051,7 +935,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=GMP',
-        points: 905,
         currentRanking: 61
     },
     {
@@ -1060,7 +943,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Argentina',
         image: 'https://placehold.co/150?text=SB',
-        points: 1390,
         currentRanking: 36
     },
     {
@@ -1069,7 +951,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Chile',
         image: 'https://placehold.co/150?text=CG',
-        points: 726,
         currentRanking: 82
     },
     {
@@ -1078,7 +959,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 22,
         country: 'Italy',
         image: 'https://placehold.co/150?text=LD',
-        points: 1579,
         currentRanking: 24
     },
     {
@@ -1087,7 +967,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 28,
         country: 'Brazil',
         image: 'https://placehold.co/150?text=JF',
-        points: 1510,
         currentRanking: 32
     },
     {
@@ -1096,7 +975,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'USA',
         image: 'https://placehold.co/150?text=ES',
-        points: 725,
         currentRanking: 85
     },
     {
@@ -1105,7 +983,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Italy',
         image: 'https://placehold.co/150?text=LN',
-        points: 561,
         currentRanking: 108
     },
     {
@@ -1114,7 +991,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'China',
         image: 'https://placehold.co/150?text=YW',
-        points: 347,
         currentRanking: 168
     },
     {
@@ -1123,7 +999,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Australia',
         image: 'https://placehold.co/150?text=JD',
-        points: 694,
         currentRanking: 88
     },
     {
@@ -1132,7 +1007,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'Croatia',
         image: 'https://placehold.co/150?text=DP',
-        points: 481,
         currentRanking: 127
     },
     {
@@ -1141,7 +1015,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: null,
         country: 'France',
         image: 'https://placehold.co/150?text=HG',
-        points: 656,
         currentRanking: 93
     },
     {
@@ -1150,7 +1023,6 @@ export const TENNIS_PLAYERS: TennisPlayer[] = [
         seed: 2,
         country: 'Italy',
         image: 'https://placehold.co/150?text=JS',
-        points: 11500,
         currentRanking: 2
     }
 ];

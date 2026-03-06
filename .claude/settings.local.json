@@ -3,7 +3,24 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "WebSearch",
+      "Bash(npx tsc:*)",
+      "Bash(npx svelte-check:*)",
+      "Bash(sqlite3:*)",
+      "mcp__rapidapi-tennis__rankingList",
+      "mcp__rapidapi-tennis__singlesRanking",
+      "mcp__rapidapi-tennis__getTournamentCalendar",
+      "mcp__rapidapi-tennis__search",
+      "mcp__rapidapi-tennis__getTournamentResults",
+      "mcp__rapidapi-tennis__getTourInfo",
+      "mcp__rapidapi-tennis__roundList",
+      "mcp__rapidapi-tennis__getPlayerPastMatches",
+      "mcp__rapidapi-tennis__getTournamentFixtures",
+      "mcp__rapidapi-tennis__getPlayerInfo",
+      "mcp__rapidapi-tennis__getPlayers",
+      "WebFetch(domain:www.atptour.com)",
+      "WebFetch(domain:www.wtatennis.com)"
     ]
   }
 }
