@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import { Settings, Users, Trophy } from '@lucide/svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { draftState, initFromServer } from '$lib/stores/draftStore';
+	import { draftState, activeTournament, initFromServer } from '$lib/stores/draftStore';
 
 	let { children, data } = $props();
 
@@ -33,7 +33,10 @@
 		</div>
 		<nav class="flex-1 p-4 space-y-2">
 			{#each navItems as item}
-				{@const isDisabled = item.label === 'Draft' && $draftState.status !== 'draft'}
+				{@const tournamentOngoing = $draftState.isComplete && !!$activeTournament && $activeTournament.status !== 'complete'}
+				{@const isDisabled =
+					(item.label === 'Draft' && $draftState.status !== 'draft') ||
+					(item.label === 'Setup' && tournamentOngoing && $page.url.pathname !== '/setup')}
 				<Button
 					variant={$page.url.pathname === item.href ? 'secondary' : 'ghost'}
 					class="w-full justify-start gap-2"
@@ -54,7 +57,7 @@
 
 	<!-- Main Content -->
 	<main class="flex-1 overflow-auto">
-		<div class="p-8 max-w-7xl mx-auto">
+		<div class="p-4 md:p-8 max-w-7xl mx-auto">
 			{@render children()}
 		</div>
 	</main>

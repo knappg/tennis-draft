@@ -62,10 +62,11 @@ export async function syncTournament(tournamentId: string): Promise<void> {
  *   - +1 bonus for unseeded picks (draft rounds 4-5) with 2+ wins
  */
 export function recomputePoints(tournamentId: string): void {
-	// Count wins per player
+	// Count wins per player (COUNT DISTINCT round guards against duplicate API rows
+	// for the same match appearing with different api_match_id values)
 	const winRows = db
 		.prepare(
-			`SELECT winner_id, COUNT(*) as wins
+			`SELECT winner_id, COUNT(DISTINCT round) as wins
 			 FROM tournament_results
 			 WHERE tournament_id = ? AND winner_id IS NOT NULL
 			 GROUP BY winner_id`
@@ -80,7 +81,7 @@ export function recomputePoints(tournamentId: string): void {
 	// Determine deepest round reached per player (last round they won a match)
 	const roundRows = db
 		.prepare(
-			`SELECT winner_id, round
+			`SELECT DISTINCT winner_id, round
 			 FROM tournament_results
 			 WHERE tournament_id = ? AND winner_id IS NOT NULL`
 		)

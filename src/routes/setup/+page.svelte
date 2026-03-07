@@ -2,6 +2,7 @@
 	import {
 		participants,
 		activeTournament,
+		draftState,
 		addParticipant,
 		removeParticipant,
 		shuffleParticipants,
@@ -33,6 +34,11 @@
 
 	const icons = ['🎾', '🏆', '🚀', '⭐', '🔥', '⚡', '🦁', '🦅', '🦈', '🐻'];
 
+	/** True when the draft is complete and the tournament hasn't finished yet. Lock the setup UI. */
+	const tournamentOngoing = $derived(
+		$draftState.isComplete && !!$activeTournament && $activeTournament.status !== 'complete'
+	);
+
 	function handleAdd() {
 		if (!name || !teamName) return;
 		addParticipant(name, teamName, selectedIcon);
@@ -61,19 +67,29 @@
 			<p class="text-muted-foreground">Select a tournament, add participants, and start the draft.</p>
 		</div>
 		<div class="flex gap-2">
-			<Button variant="outline" size="icon" onclick={resetDraft} title="Reset All">
+			<Button variant="outline" size="icon" onclick={resetDraft} title="Reset All" disabled={tournamentOngoing}>
 				<RefreshCcw class="h-4 w-4" />
 			</Button>
-			<Button variant="outline" onclick={shuffleParticipants} disabled={$participants.length < 2}>
+			<Button variant="outline" onclick={shuffleParticipants} disabled={$participants.length < 2 || tournamentOngoing}>
 				<Shuffle class="mr-2 h-4 w-4" />
 				Shuffle Order
 			</Button>
-			<Button onclick={handleStart} disabled={$participants.length < 2 || !$activeTournament}>
+			<Button onclick={handleStart} disabled={$participants.length < 2 || !$activeTournament || tournamentOngoing}>
 				<Play class="mr-2 h-4 w-4" />
 				Start Draft
 			</Button>
 		</div>
 	</div>
+
+	{#if tournamentOngoing}
+		<div class="flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+			<span class="text-base">🔒</span>
+			<span>
+				<strong>{$activeTournament?.name} {$activeTournament?.year}</strong> is in progress.
+				The draft is locked until the tournament concludes.
+			</span>
+		</div>
+	{/if}
 
 	<!-- Tournament Selection -->
 	<div class="space-y-4">
@@ -106,7 +122,9 @@
 				{@const isSelected = currentCatalogId === entry.id && $activeTournament?.year === selectingYear}
 				<button
 					onclick={() => handleSelectTournament(entry.id)}
-					class="relative text-left p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md
+					disabled={tournamentOngoing}
+					class="relative text-left p-4 rounded-lg border-2 transition-all duration-200
+						{tournamentOngoing ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md'}
 						{isSelected
 						? 'border-primary bg-primary/5'
 						: 'border-border bg-card hover:border-primary/50'}"
@@ -189,7 +207,7 @@
 						{/each}
 					</div>
 				</div>
-				<Button class="w-full" onclick={handleAdd} disabled={!name || !teamName}>
+				<Button class="w-full" onclick={handleAdd} disabled={!name || !teamName || tournamentOngoing}>
 					<Plus class="mr-2 h-4 w-4" />
 					Add Participant
 				</Button>
@@ -229,7 +247,7 @@
 								<p class="text-xs text-muted-foreground mt-1">{participant.teamName}</p>
 							</div>
 						</div>
-						<Button variant="ghost" size="icon" onclick={() => removeParticipant(participant.id)}>
+						<Button variant="ghost" size="icon" onclick={() => removeParticipant(participant.id)} disabled={tournamentOngoing}>
 							<Trash2 class="h-4 w-4 text-destructive" />
 						</Button>
 					</div>

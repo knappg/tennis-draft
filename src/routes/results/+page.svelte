@@ -83,38 +83,40 @@
 </script>
 
 <div class="space-y-8 pb-20">
-	<div class="flex items-center justify-between border-b py-4">
-		<div>
-			<h2 class="text-3xl font-bold tracking-tight">Draft Results</h2>
-			<p class="text-muted-foreground">
-				{#if $activeTournament}
-					{$activeTournament.name}
-					{$activeTournament.year} — Scored by wins
-				{:else}
-					Final team rosters and standings
+	<div class="border-b py-4 space-y-3">
+		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+			<div>
+				<h2 class="text-3xl font-bold tracking-tight">Draft Results</h2>
+				<p class="text-muted-foreground">
+					{#if $activeTournament}
+						{$activeTournament.name}
+						{$activeTournament.year} — Scored by wins
+					{:else}
+						Final team rosters and standings
+					{/if}
+				</p>
+			</div>
+			<div class="flex flex-wrap items-center gap-3">
+				{#if lastPolled}
+					<span class="text-xs text-muted-foreground">
+						Updated {lastPolled.toLocaleTimeString()}
+					</span>
 				{/if}
-			</p>
-		</div>
-		<div class="flex items-center gap-3">
-			{#if lastPolled}
-				<span class="text-xs text-muted-foreground">
-					Updated {lastPolled.toLocaleTimeString()}
-				</span>
-			{/if}
-			{#if !hasLiveScores}
-				<Badge variant="outline" class="text-xs">Showing ranking points (no results yet)</Badge>
-			{/if}
-			<Button variant="outline" size="sm" onclick={fetchScores} disabled={polling}>
-				<RefreshCw class="mr-2 h-3 w-3 {polling ? 'animate-spin' : ''}" />
-				Refresh
-			</Button>
-			{#if $draftState.tournamentId}
-				<SyncButton
-					tournamentId={$draftState.tournamentId}
-					wtaTournamentId={$draftState.wtaTournamentId}
-					onsynced={fetchScores}
-				/>
-			{/if}
+				{#if !hasLiveScores}
+					<Badge variant="outline" class="text-xs">Showing ranking points (no results yet)</Badge>
+				{/if}
+				<Button variant="outline" size="sm" onclick={fetchScores} disabled={polling}>
+					<RefreshCw class="mr-2 h-3 w-3 {polling ? 'animate-spin' : ''}" />
+					Refresh
+				</Button>
+				{#if $draftState.tournamentId}
+					<SyncButton
+						tournamentId={$draftState.tournamentId}
+						wtaTournamentId={$draftState.wtaTournamentId}
+						onsynced={fetchScores}
+					/>
+				{/if}
+			</div>
 		</div>
 	</div>
 
@@ -127,10 +129,7 @@
 						<div class="flex items-center gap-3">
 							<div
 								class="flex items-center justify-center h-8 w-8 rounded-full font-bold text-sm
-								{rank === 0 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-								 rank === 1 ? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' :
-								 rank === 2 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
-								 'bg-muted text-muted-foreground'}"
+								{rank === 0 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-muted text-muted-foreground'}"
 							>
 								{rank + 1}
 							</div>
@@ -160,7 +159,7 @@
 									class="flex items-center gap-3 p-2 rounded-lg bg-muted/40 hover:bg-muted transition-colors"
 								>
 									<Avatar class="h-10 w-10 rounded-sm shrink-0">
-										<AvatarImage src={player.image} alt={player.name} class="object-cover" />
+										<AvatarImage src={player.image} alt={player.name} class="object-cover object-top" />
 										<AvatarFallback>{player.name.substring(0, 2)}</AvatarFallback>
 									</Avatar>
 									<div class="flex-1 min-w-0">

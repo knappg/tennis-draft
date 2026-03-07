@@ -1,7 +1,7 @@
 export const ROUND_ORDER: string[] = ['R128', 'R64', 'R32', 'R16', 'QF', 'SF', 'F', 'W'];
 
 export const POINTS_PER_WIN = 1;
-export const UNSEEDED_BONUS_WINS_THRESHOLD = 2; // wins needed to earn the bonus
+export const UNSEEDED_BONUS_WINS_THRESHOLD = 3; // wins needed to earn the bonus
 export const UNSEEDED_BONUS_POINTS = 1;
 export const UNSEEDED_DRAFT_ROUNDS = [4, 5]; // draft rounds where the bonus applies
 

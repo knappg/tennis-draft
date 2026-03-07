@@ -20,7 +20,8 @@
       "mcp__rapidapi-tennis__getPlayerInfo",
       "mcp__rapidapi-tennis__getPlayers",
       "WebFetch(domain:www.atptour.com)",
-      "WebFetch(domain:www.wtatennis.com)"
+      "WebFetch(domain:www.wtatennis.com)",
+      "Bash(python3:*)"
     ]
   }
 }
