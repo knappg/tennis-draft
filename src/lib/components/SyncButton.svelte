@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { RefreshCw } from '@lucide/svelte';
+	import { base } from '$app/paths';
 
 	interface Props {
 		tournamentId: string;
@@ -27,7 +28,7 @@
 
 		try {
 			for (const id of ids) {
-				const resp = await fetch('/api/tournament/sync', {
+				const resp = await fetch(`${base}/api/tournament/sync`, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ tournamentId: id, password })

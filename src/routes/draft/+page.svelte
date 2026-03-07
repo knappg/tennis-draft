@@ -22,6 +22,7 @@
 	import DraftTimer from '$lib/components/DraftTimer.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { fade, scale } from 'svelte/transition';
 	import { getRoundLabel } from '$lib/data/tournamentPoints';
 
@@ -35,7 +36,7 @@
 
 	$effect(() => {
 		if ($draftState.isComplete) {
-			goto('/results');
+			goto(`${base}/results`);
 		}
 	});
 
@@ -46,8 +47,8 @@
 
 		const ids = [atpId, wtaId].filter(Boolean) as string[];
 		const [scoresResults, bracketResults] = await Promise.all([
-			Promise.all(ids.map(id => fetch(`/api/tournament/scores?tournamentId=${id}`).then(r => r.json()))),
-			Promise.all(ids.map(id => fetch(`/api/tournament/bracket?tournamentId=${id}`).then(r => r.json())))
+			Promise.all(ids.map(id => fetch(`${base}/api/tournament/scores?tournamentId=${id}`).then(r => r.json()))),
+			Promise.all(ids.map(id => fetch(`${base}/api/tournament/bracket?tournamentId=${id}`).then(r => r.json())))
 		]);
 
 		const merged: Record<string, PlayerTournamentPoints> = {};

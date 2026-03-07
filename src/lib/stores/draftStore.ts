@@ -2,6 +2,7 @@ import { writable, derived, get } from 'svelte/store';
 import type { Participant, DraftState, TennisPlayer, Tournament } from '$lib/types';
 import { TENNIS_PLAYERS } from '$lib/data/players';
 import { browser } from '$app/environment';
+import { base } from '$app/paths';
 import { isEligible, DRAFT_ROUND_RULES } from '$lib/data/tournamentPoints';
 import { getWtaCounterpart } from '$lib/data/tournaments';
 
@@ -94,7 +95,7 @@ export function addParticipant(name: string, teamName: string, icon: string) {
 		picks: []
 	};
 	participants.update(p => [...p, newParticipant]);
-	fetch('/api/draft/participants', {
+	fetch(`${base}/api/draft/participants`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(newParticipant)
@@ -103,7 +104,7 @@ export function addParticipant(name: string, teamName: string, icon: string) {
 
 export function removeParticipant(id: string) {
 	participants.update(p => p.filter(x => x.id !== id));
-	fetch(`/api/draft/participants/${id}`, { method: 'DELETE' });
+	fetch(`${base}/api/draft/participants/${id}`, { method: 'DELETE' });
 }
 
 export function shuffleParticipants() {
@@ -116,7 +117,7 @@ export function shuffleParticipants() {
 		}
 		return shuffled;
 	});
-	fetch('/api/draft/participants/order', {
+	fetch(`${base}/api/draft/participants/order`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
@@ -151,7 +152,7 @@ export function startDraft() {
 	};
 
 	draftState.set(newState);
-	fetch('/api/draft/start', {
+	fetch(`${base}/api/draft/start`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ state: newState })
@@ -194,7 +195,7 @@ export function makePick(tennisPlayerId: string) {
 		return newState;
 	});
 
-	fetch('/api/draft/pick', {
+	fetch(`${base}/api/draft/pick`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ tennisPlayerId, participantId, pickIndex, draftRound, newState })
@@ -216,12 +217,12 @@ export function resetDraft() {
 	activeTournament.set(null);
 	allAtpPlayers.set(TENNIS_PLAYERS);
 	allWtaPlayers.set([]);
-	fetch('/api/draft/reset', { method: 'POST' });
+	fetch(`${base}/api/draft/reset`, { method: 'POST' });
 }
 
 /** Select a tournament from the catalog, creating DB records and loading players. */
 export async function selectTournament(catalogId: string, year: number): Promise<void> {
-	const resp = await fetch('/api/tournament/select', {
+	const resp = await fetch(`${base}/api/tournament/select`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ catalogId, year })

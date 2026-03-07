@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { page } from '$app/stores';
 	import { Settings, Users, Trophy } from '@lucide/svelte';
+	import { base } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
 	import { draftState, activeTournament, initFromServer } from '$lib/stores/draftStore';
 
@@ -19,9 +20,9 @@
 	});
 
 	const navItems = [
-		{ href: '/setup', label: 'Setup', icon: Settings },
-		{ href: '/draft', label: 'Draft', icon: Users },
-		{ href: '/results', label: 'Results', icon: Trophy }
+		{ href: `${base}/setup`, label: 'Setup', icon: Settings },
+		{ href: `${base}/draft`, label: 'Draft', icon: Users },
+		{ href: `${base}/results`, label: 'Results', icon: Trophy }
 	];
 </script>
 

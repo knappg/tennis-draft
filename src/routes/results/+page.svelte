@@ -2,6 +2,7 @@
 	import { participants, allPlayers, activeTournament, draftState } from '$lib/stores/draftStore';
 	import type { TennisPlayer, PlayerTournamentPoints } from '$lib/types';
 	import SyncButton from '$lib/components/SyncButton.svelte';
+	import { base } from '$app/paths';
 
 	let tournamentScores = $state<Record<string, PlayerTournamentPoints>>({});
 	let eliminatedPlayerIds = $state<Set<string>>(new Set());
@@ -45,10 +46,10 @@
 		const ids = [tournamentId, wtaId].filter(Boolean) as string[];
 		const [scoresResults, bracketResults] = await Promise.all([
 			Promise.all([
-				fetch(`/api/tournament/scores?tournamentId=${tournamentId}`),
-				wtaId ? fetch(`/api/tournament/scores?tournamentId=${wtaId}`) : Promise.resolve(null)
+				fetch(`${base}/api/tournament/scores?tournamentId=${tournamentId}`),
+				wtaId ? fetch(`${base}/api/tournament/scores?tournamentId=${wtaId}`) : Promise.resolve(null)
 			]),
-			Promise.all(ids.map((id) => fetch(`/api/tournament/bracket?tournamentId=${id}`)))
+			Promise.all(ids.map((id) => fetch(`${base}/api/tournament/bracket?tournamentId=${id}`)))
 		]);
 
 		const [atpScoreResp, wtaScoreResp] = scoresResults;
