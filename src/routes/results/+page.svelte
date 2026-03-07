@@ -160,7 +160,10 @@
 											alt={player.name}
 											class="rp-player-img"
 											onerror={(e) => {
-												(e.target as HTMLImageElement).style.display = 'none';
+												const img = e.target as HTMLImageElement;
+												img.style.display = 'none';
+												const fallback = img.previousElementSibling as HTMLElement;
+												if (fallback) fallback.style.display = 'flex';
 											}}
 										/>
 									</div>
@@ -454,10 +457,13 @@
 	}
 
 	.rp-avatar-fallback {
+		display: none;
 		font-size: 12px;
 		font-weight: 600;
 		color: #8a6a1c;
 		text-transform: uppercase;
+		align-items: center;
+		justify-content: center;
 	}
 
 	/* ── Player details ── */
