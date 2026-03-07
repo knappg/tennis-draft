@@ -57,7 +57,7 @@
 
 	<!-- Main Content -->
 	<main class="flex-1 overflow-auto">
-		<div class="p-4 md:p-8 max-w-7xl mx-auto">
+		<div class="pt-8 px-5 pb-20 max-w-7xl mx-auto">
 			{@render children()}
 		</div>
 	</main>

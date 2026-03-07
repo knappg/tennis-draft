@@ -75,7 +75,7 @@
 
 <div class="flex items-center gap-2">
 	{#if !expanded}
-		<Button variant="outline" size="sm" onclick={() => (expanded = true)}>
+		<Button variant="outline" size="sm" class="sync-trigger-btn" onclick={() => (expanded = true)}>
 			<RefreshCw class="mr-2 h-3 w-3" />
 			Sync Now
 		</Button>
@@ -101,3 +101,11 @@
 		<span class="text-xs {isError ? 'text-destructive' : 'text-muted-foreground'}">{message}</span>
 	{/if}
 </div>
+
+<style>
+	:global(.sync-trigger-btn:hover) {
+		background-color: #e8f4ed;
+		color: #1a6b3c;
+		border-color: rgba(26, 107, 60, 0.3);
+	}
+</style>

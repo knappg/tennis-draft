@@ -334,7 +334,7 @@ export function upsertTournamentPlayer(p: TennisPlayer): void {
 		   (@id, @tournamentId, @tour, @name, @seed, @country, @imageUrl, @currentRanking, @atpPlayerId, @apiId)
 		 ON CONFLICT(id, tournament_id) DO UPDATE SET
 		   name            = excluded.name,
-		   seed            = excluded.seed,
+		   seed            = COALESCE(excluded.seed, tournament_players.seed),
 		   country         = excluded.country,
 		   image_url       = excluded.image_url,
 		   current_ranking = excluded.current_ranking,

@@ -6,7 +6,16 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: #f5f4f1;
+  /* Design system tokens */
+  --surface: #ffffff;
+  --surface-2: #f9f8f6;
+  --text-primary: #0f0f0f;
+  --text-secondary: #6b6b6b;
+  --text-muted: #a0a0a0;
+  --gold: #c9a84c;
+  --gold-soft: #faf3e0;
+  --pill-bg: #ececea;
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
@@ -117,5 +126,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'DM Sans', sans-serif;
   }
 }
