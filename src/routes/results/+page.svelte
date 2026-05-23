@@ -92,11 +92,11 @@
 
 	const hasLiveScores = $derived(Object.keys(tournamentScores).length > 0);
 
-	function handleArchive() {
+	async function handleArchive() {
 		if (!confirm('Archive this tournament and start a new draft? All results will be preserved.'))
 			return;
-		archiveDraft();
-		goto('/setup');
+		await archiveDraft();
+		goto(`${base}/setup`);
 	}
 </script>
 

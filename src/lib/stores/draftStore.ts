@@ -222,7 +222,8 @@ export function resetDraft() {
 }
 
 /** Archive the current tournament and reset to setup for a new draft. */
-export function archiveDraft() {
+export async function archiveDraft() {
+	await fetch(`${base}/api/draft/archive`, { method: 'POST' });
 	draftState.set({
 		currentRound: 1,
 		currentPickIndex: 0,
@@ -237,7 +238,6 @@ export function archiveDraft() {
 	allAtpPlayers.set(TENNIS_PLAYERS);
 	allWtaPlayers.set([]);
 	participants.update((p) => p.map((x) => ({ ...x, picks: [] })));
-	fetch(`${base}/api/draft/archive`, { method: 'POST' });
 }
 
 /** Select a tournament from the catalog, creating DB records and loading players. */
