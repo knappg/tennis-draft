@@ -9,7 +9,7 @@ All variables are read at server startup from the process environment (`.env` fi
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `SYNC_PASSWORD` | **Yes** | — | Password required to trigger a live data sync from the UI. Set this to anything memorable; it gates the "Sync Now" button on the Setup and Results pages. |
-| `SPORTDEVS_API_KEY` | For live data | — | RapidAPI key for the [SportDevs Tennis API](https://rapidapi.com/sportdevs/api/tennis-api-atp-wta-itf). Without this, tournament draws and match results cannot be fetched; the app still works with static/historical data. Free tier allows 300 requests/day. |
+| `RAPIDAPI_KEY` | For live data | — | RapidAPI key for the Tennis API. Without this, tournament draws and match results cannot be fetched; the app still works with static/historical data. |
 | `DATA_DIR` | No | `./data` | Directory where the SQLite database file is stored. Override in production to a persistent path (e.g. `/var/data/tennis-draft`). |
 | `DB_FILENAME` | No | `tennis-draft.db` | Filename of the SQLite database within `DATA_DIR`. |
 
@@ -17,24 +17,29 @@ All variables are read at server startup from the process environment (`.env` fi
 
 ```
 SYNC_PASSWORD=changeme
-SPORTDEVS_API_KEY=your_rapidapi_key_here
+RAPIDAPI_KEY=your_rapidapi_key_here
 ```
 
-### Example PM2 ecosystem file (production)
+### PM2 ecosystem file (production)
+
+Create an `ecosystem.config.cjs` in the project root (gitignored since it contains secrets):
 
 ```js
 module.exports = {
   apps: [{
     name: 'tennis-draft',
     script: 'build/index.js',
+    cwd: '/var/www/tennis-draft',
     env: {
       NODE_ENV: 'production',
-      DATA_DIR: '/var/data/tennis-draft',
+      PORT: '3001',
+      BASE_PATH: '/tennis-draft',
+      DATA_DIR: '/var/www/tennis-draft/data',
       SYNC_PASSWORD: 'your-secret-password',
-      SPORTDEVS_API_KEY: 'your_rapidapi_key_here'
+      RAPIDAPI_KEY: 'your_rapidapi_key_here'
     }
   }]
-}
+};
 ```
 
 ## Development
