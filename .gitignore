@@ -24,3 +24,6 @@ vite.config.ts.timestamp-*
 
 # SQLite DB (local data directory)
 /data/
+
+# PM2 config (contains secrets)
+ecosystem.config.cjs
