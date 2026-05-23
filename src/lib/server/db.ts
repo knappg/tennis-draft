@@ -133,4 +133,46 @@ if (dbVersion < 2) {
 	db.pragma('user_version = 2');
 }
 
+// Migration v3: Change picks PK to (tennis_player_id, tournament_id) for multi-tournament support
+if (dbVersion < 3) {
+	db.transaction(() => {
+		db.exec(`
+			CREATE TABLE picks_new (
+				tennis_player_id TEXT    NOT NULL,
+				participant_id   TEXT    NOT NULL REFERENCES participants(id) ON DELETE CASCADE,
+				pick_index       INTEGER NOT NULL,
+				tournament_id    TEXT,
+				draft_round      INTEGER NOT NULL DEFAULT 0,
+				UNIQUE(tennis_player_id, tournament_id)
+			);
+			INSERT INTO picks_new (tennis_player_id, participant_id, pick_index, tournament_id, draft_round)
+				SELECT tennis_player_id, participant_id, pick_index, tournament_id, draft_round FROM picks;
+			DROP TABLE picks;
+			ALTER TABLE picks_new RENAME TO picks;
+		`);
+	})();
+	db.pragma('user_version = 3');
+}
+
+// Migration v4: Remove CASCADE on picks.participant_id to protect archived picks
+if (dbVersion < 4) {
+	db.transaction(() => {
+		db.exec(`
+			CREATE TABLE picks_v4 (
+				tennis_player_id TEXT    NOT NULL,
+				participant_id   TEXT    NOT NULL,
+				pick_index       INTEGER NOT NULL,
+				tournament_id    TEXT,
+				draft_round      INTEGER NOT NULL DEFAULT 0,
+				UNIQUE(tennis_player_id, tournament_id)
+			);
+			INSERT INTO picks_v4 (tennis_player_id, participant_id, pick_index, tournament_id, draft_round)
+				SELECT tennis_player_id, participant_id, pick_index, tournament_id, draft_round FROM picks;
+			DROP TABLE picks;
+			ALTER TABLE picks_v4 RENAME TO picks;
+		`);
+	})();
+	db.pragma('user_version = 4');
+}
+
 export { db };

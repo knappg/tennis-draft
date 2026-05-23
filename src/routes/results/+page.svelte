@@ -1,8 +1,15 @@
 <script lang="ts">
-	import { participants, allPlayers, activeTournament, draftState } from '$lib/stores/draftStore';
+	import {
+		participants,
+		allPlayers,
+		activeTournament,
+		draftState,
+		archiveDraft
+	} from '$lib/stores/draftStore';
 	import type { TennisPlayer, PlayerTournamentPoints } from '$lib/types';
 	import SyncButton from '$lib/components/SyncButton.svelte';
 	import { base } from '$app/paths';
+	import { goto } from '$app/navigation';
 
 	let tournamentScores = $state<Record<string, PlayerTournamentPoints>>({});
 	let eliminatedPlayerIds = $state<Set<string>>(new Set());
@@ -84,6 +91,13 @@
 	);
 
 	const hasLiveScores = $derived(Object.keys(tournamentScores).length > 0);
+
+	function handleArchive() {
+		if (!confirm('Archive this tournament and start a new draft? All results will be preserved.'))
+			return;
+		archiveDraft();
+		goto('/setup');
+	}
 </script>
 
 <div class="rp">
@@ -118,6 +132,11 @@
 					wtaTournamentId={$draftState.wtaTournamentId}
 					onsynced={fetchScores}
 				/>
+			{/if}
+			{#if $draftState.status === 'results'}
+				<button class="rp-archive-btn" onclick={handleArchive}>
+					Archive & New Draft
+				</button>
 			{/if}
 		</div>
 	</div>
@@ -296,6 +315,24 @@
 		padding: 3px 10px;
 		border-radius: 999px;
 		border: 1px solid var(--border-strong);
+	}
+
+	.rp-archive-btn {
+		font-size: 13px;
+		font-weight: 500;
+		padding: 6px 14px;
+		border-radius: 8px;
+		border: 1px solid var(--border-strong);
+		background: var(--surface);
+		color: var(--text-primary);
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+
+	.rp-archive-btn:hover {
+		background: var(--accent-soft);
+		border-color: var(--accent);
+		color: var(--accent);
 	}
 
 

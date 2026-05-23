@@ -9,10 +9,10 @@ import { TENNIS_PLAYERS } from '$lib/data/players';
 
 export function load() {
 	const serverState = getDraftState();
-	const serverParticipants = getParticipants();
-	const serverDraftedMap = getDraftedPlayersMap();
-
 	const { tournamentId, wtaTournamentId } = serverState;
+
+	const serverParticipants = getParticipants(tournamentId);
+	const serverDraftedMap = getDraftedPlayersMap(tournamentId);
 
 	// ATP players: use tournament_players if populated, else fall back to static list
 	const dbAtpPlayers = tournamentId ? getTournamentPlayers(tournamentId, 'atp') : [];

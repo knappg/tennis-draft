@@ -203,7 +203,6 @@ export function makePick(tennisPlayerId: string) {
 }
 
 export function resetDraft() {
-	participants.set([]);
 	draftState.set({
 		currentRound: 1,
 		currentPickIndex: 0,
@@ -217,7 +216,28 @@ export function resetDraft() {
 	activeTournament.set(null);
 	allAtpPlayers.set(TENNIS_PLAYERS);
 	allWtaPlayers.set([]);
+	// Clear picks from participants but keep the participants themselves
+	participants.update((p) => p.map((x) => ({ ...x, picks: [] })));
 	fetch(`${base}/api/draft/reset`, { method: 'POST' });
+}
+
+/** Archive the current tournament and reset to setup for a new draft. */
+export function archiveDraft() {
+	draftState.set({
+		currentRound: 1,
+		currentPickIndex: 0,
+		snakeOrder: [],
+		isComplete: false,
+		status: 'setup',
+		tournamentId: null,
+		wtaTournamentId: null
+	});
+	draftedPlayers.set({});
+	activeTournament.set(null);
+	allAtpPlayers.set(TENNIS_PLAYERS);
+	allWtaPlayers.set([]);
+	participants.update((p) => p.map((x) => ({ ...x, picks: [] })));
+	fetch(`${base}/api/draft/archive`, { method: 'POST' });
 }
 
 /** Select a tournament from the catalog, creating DB records and loading players. */

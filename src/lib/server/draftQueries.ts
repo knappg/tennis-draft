@@ -133,14 +133,19 @@ export function getDraftState(): DraftState {
 	};
 }
 
-export function getParticipants(): Participant[] {
+export function getParticipants(tournamentId?: string | null): Participant[] {
 	const rows = db
 		.prepare('SELECT * FROM participants ORDER BY sort_order')
 		.all() as ParticipantRow[];
 
-	const pickRows = db
-		.prepare('SELECT * FROM picks ORDER BY pick_index')
-		.all() as PickRow[];
+	let pickRows: PickRow[];
+	if (tournamentId) {
+		pickRows = db
+			.prepare('SELECT * FROM picks WHERE tournament_id = ? ORDER BY pick_index')
+			.all(tournamentId) as PickRow[];
+	} else {
+		pickRows = [];
+	}
 
 	const picksByParticipant: Record<string, string[]> = {};
 	for (const pick of pickRows) {
@@ -159,8 +164,11 @@ export function getParticipants(): Participant[] {
 	}));
 }
 
-export function getDraftedPlayersMap(): Record<string, string> {
-	const rows = db.prepare('SELECT tennis_player_id, participant_id FROM picks').all() as PickRow[];
+export function getDraftedPlayersMap(tournamentId?: string | null): Record<string, string> {
+	if (!tournamentId) return {};
+	const rows = db
+		.prepare('SELECT tennis_player_id, participant_id FROM picks WHERE tournament_id = ?')
+		.all(tournamentId) as PickRow[];
 	const map: Record<string, string> = {};
 	for (const row of rows) {
 		map[row.tennis_player_id] = row.participant_id;
@@ -239,20 +247,33 @@ export function applyPick(
 }
 
 export function resetAllDraftData(): void {
-	const transaction = db.transaction(() => {
-		db.prepare('DELETE FROM picks').run();
-		db.prepare('DELETE FROM participants').run();
+	const state = db
+		.prepare('SELECT tournament_id, wta_tournament_id FROM draft_state WHERE id = 1')
+		.get() as { tournament_id: string | null; wta_tournament_id: string | null } | undefined;
+
+	db.transaction(() => {
+		// Only delete picks for the current tournament — archived picks are preserved
+		if (state?.tournament_id) {
+			db.prepare('DELETE FROM picks WHERE tournament_id = ?').run(state.tournament_id);
+		}
+		if (state?.wta_tournament_id) {
+			db.prepare('DELETE FROM picks WHERE tournament_id = ?').run(state.wta_tournament_id);
+		}
+		db.prepare('DELETE FROM picks WHERE tournament_id IS NULL').run();
+
+		// Reset draft state but keep participants (same group drafts again)
 		db.prepare(
 			`UPDATE draft_state SET
 			   current_round     = 1,
 			   current_pick_idx  = 0,
 			   snake_order       = '[]',
 			   is_complete       = 0,
-			   status            = 'setup'
+			   status            = 'setup',
+			   tournament_id     = NULL,
+			   wta_tournament_id = NULL
 			 WHERE id = 1`
 		).run();
-	});
-	transaction();
+	})();
 }
 
 // ─── Tournament Queries ───────────────────────────────────────────────────────
@@ -433,6 +454,38 @@ export function upsertPlayerPoints(pts: PlayerTournamentPoints): void {
 		   bonus_points  = excluded.bonus_points,
 		   points_earned = excluded.points_earned`
 	).run(pts);
+}
+
+/** Archive the current draft: mark tournaments complete, reset draft state, but keep participants and picks. */
+export function archiveDraft(): void {
+	const state = db
+		.prepare('SELECT tournament_id, wta_tournament_id FROM draft_state WHERE id = 1')
+		.get() as { tournament_id: string | null; wta_tournament_id: string | null } | undefined;
+
+	db.transaction(() => {
+		if (state?.tournament_id) {
+			db.prepare("UPDATE tournaments SET status = 'complete' WHERE id = ?").run(
+				state.tournament_id
+			);
+		}
+		if (state?.wta_tournament_id) {
+			db.prepare("UPDATE tournaments SET status = 'complete' WHERE id = ?").run(
+				state.wta_tournament_id
+			);
+		}
+
+		db.prepare(
+			`UPDATE draft_state SET
+			   current_round     = 1,
+			   current_pick_idx  = 0,
+			   snake_order       = '[]',
+			   is_complete       = 0,
+			   status            = 'setup',
+			   tournament_id     = NULL,
+			   wta_tournament_id = NULL
+			 WHERE id = 1`
+		).run();
+	})();
 }
 
 /** Return picks for a tournament, with their draft_round, for scoring purposes. */
