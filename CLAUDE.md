@@ -68,6 +68,17 @@ Pages are thin; business logic belongs in the store. Snake-draft order is manage
 
 TailwindCSS v4 with oklch color system. UI components come from **shadcn-svelte** (built on **bits-ui** headless primitives). Prettier uses **tabs** for indentation and single quotes.
 
+### Deployment
+
+Production is deployed via SSH to `root@powerknapp.com`. Follow the deploy instructions in the CLAUDE.md file on that server.
+
+```bash
+ssh root@powerknapp.com
+# Then follow the CLAUDE.md in the project directory on the server
+```
+
+DB schema migrations (`src/lib/server/db.ts`) run automatically on app startup — no manual migration steps needed.
+
 ### Testing
 
 Vitest with dual project config (in `vite.config.ts`):

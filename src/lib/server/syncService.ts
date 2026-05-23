@@ -62,14 +62,21 @@ export async function syncTournament(tournamentId: string): Promise<void> {
  *   - +1 bonus for unseeded picks (draft rounds 4-5) with 2+ wins
  */
 export function recomputePoints(tournamentId: string): void {
-	// Count wins per player (COUNT DISTINCT round guards against duplicate API rows
-	// for the same match appearing with different api_match_id values)
+	// Count wins per player, deduplicating by match content (player pair + score)
+	// to handle duplicate API rows for the same match with different api_match_id
+	// or different round values (e.g. R128 vs R64 for the same physical match).
 	const winRows = db
 		.prepare(
-			`SELECT winner_id, COUNT(DISTINCT round) as wins
-			 FROM tournament_results
-			 WHERE tournament_id = ? AND winner_id IS NOT NULL
-			 GROUP BY winner_id`
+			`WITH deduped AS (
+				SELECT DISTINCT winner_id,
+					MIN(player1_id, player2_id) || '|' || MAX(player1_id, player2_id) || '|' || COALESCE(score, CAST(id AS TEXT)) AS match_key
+				FROM tournament_results
+				WHERE tournament_id = ? AND winner_id IS NOT NULL
+					AND (winner_id = player1_id OR winner_id = player2_id)
+			)
+			SELECT winner_id, COUNT(*) AS wins
+			FROM deduped
+			GROUP BY winner_id`
 		)
 		.all(tournamentId) as Array<{ winner_id: string; wins: number }>;
 
@@ -83,7 +90,8 @@ export function recomputePoints(tournamentId: string): void {
 		.prepare(
 			`SELECT DISTINCT winner_id, round
 			 FROM tournament_results
-			 WHERE tournament_id = ? AND winner_id IS NOT NULL`
+			 WHERE tournament_id = ? AND winner_id IS NOT NULL
+				AND (winner_id = player1_id OR winner_id = player2_id)`
 		)
 		.all(tournamentId) as Array<{ winner_id: string; round: string }>;
 

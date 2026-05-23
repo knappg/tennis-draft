@@ -14,7 +14,9 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest --project server",
 		"test:browser": "vitest --project client",
-		"test": "npm run test:unit -- --run"
+		"test": "npm run test:unit -- --run",
+		"build:prod": "BASE_PATH=/tennis-draft vite build",
+		"deploy": "BASE_PATH=/tennis-draft vite build && pm2 restart tennis-draft"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
