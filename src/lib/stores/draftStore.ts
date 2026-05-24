@@ -221,9 +221,8 @@ export function resetDraft() {
 	fetch(`${base}/api/draft/reset`, { method: 'POST' });
 }
 
-/** Archive the current tournament and reset to setup for a new draft. */
-export async function archiveDraft() {
-	await fetch(`${base}/api/draft/archive`, { method: 'POST' });
+/** Update client stores after a successful archive API call. */
+export function archiveDraft() {
 	draftState.set({
 		currentRound: 1,
 		currentPickIndex: 0,

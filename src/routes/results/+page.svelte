@@ -10,6 +10,7 @@
 	import SyncButton from '$lib/components/SyncButton.svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { EllipsisVertical } from '@lucide/svelte';
 
 	let tournamentScores = $state<Record<string, PlayerTournamentPoints>>({});
 	let eliminatedPlayerIds = $state<Set<string>>(new Set());
@@ -92,11 +93,73 @@
 
 	const hasLiveScores = $derived(Object.keys(tournamentScores).length > 0);
 
+	// ── Menu dropdown ──
+	let menuOpen = $state(false);
+	let showRules = $state(false);
+	let archiveStep: 'hidden' | 'password' = $state('hidden');
+	let archivePassword = $state('');
+	let archiveError = $state('');
+	let archiving = $state(false);
+	let menuEl = $state<HTMLDivElement | null>(null);
+
+	function toggleMenu() {
+		menuOpen = !menuOpen;
+		if (!menuOpen) {
+			archiveStep = 'hidden';
+			archivePassword = '';
+			archiveError = '';
+		}
+	}
+
+	function handleClickOutside(e: MouseEvent) {
+		if (menuEl && !menuEl.contains(e.target as Node)) {
+			menuOpen = false;
+			archiveStep = 'hidden';
+			archivePassword = '';
+			archiveError = '';
+		}
+	}
+
+	$effect(() => {
+		if (menuOpen) {
+			document.addEventListener('click', handleClickOutside, true);
+			return () => document.removeEventListener('click', handleClickOutside, true);
+		}
+	});
+
 	async function handleArchive() {
-		if (!confirm('Archive this tournament and start a new draft? All results will be preserved.'))
+		if (!archivePassword) return;
+		archiving = true;
+		archiveError = '';
+
+		const resp = await fetch(`${base}/api/draft/archive`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ password: archivePassword })
+		});
+
+		if (resp.status === 403) {
+			archiveError = 'Incorrect password.';
+			archiving = false;
 			return;
-		await archiveDraft();
+		}
+		if (!resp.ok) {
+			archiveError = 'Archive failed.';
+			archiving = false;
+			return;
+		}
+
+		archiveDraft();
 		goto(`${base}/setup`);
+	}
+
+	function handleArchiveKeydown(e: KeyboardEvent) {
+		if (e.key === 'Enter') handleArchive();
+		if (e.key === 'Escape') {
+			archiveStep = 'hidden';
+			archivePassword = '';
+			archiveError = '';
+		}
 	}
 </script>
 
@@ -133,13 +196,80 @@
 					onsynced={fetchScores}
 				/>
 			{/if}
-			{#if $draftState.status === 'results'}
-				<button class="rp-archive-btn" onclick={handleArchive}>
-					Archive & New Draft
+			<div class="rp-menu-wrap" bind:this={menuEl}>
+				<button class="rp-menu-trigger" onclick={toggleMenu} aria-label="More options">
+					<EllipsisVertical class="rp-menu-icon" />
 				</button>
-			{/if}
+				{#if menuOpen}
+					<div class="rp-dropdown">
+						<button class="rp-dropdown-item" onclick={() => { showRules = !showRules; menuOpen = false; }}>
+							Rules & Scoring
+						</button>
+						{#if $draftState.status === 'results'}
+							{#if archiveStep === 'hidden'}
+								<button class="rp-dropdown-item danger" onclick={() => (archiveStep = 'password')}>
+									Archive & New Draft
+								</button>
+							{:else}
+								<div class="rp-dropdown-archive">
+									<input
+										type="password"
+										placeholder="Admin password"
+										bind:value={archivePassword}
+										onkeydown={handleArchiveKeydown}
+										class="rp-archive-input"
+										autofocus
+									/>
+									<button
+										class="rp-dropdown-confirm"
+										onclick={handleArchive}
+										disabled={archiving || !archivePassword}
+									>
+										{archiving ? '…' : 'Go'}
+									</button>
+								</div>
+								{#if archiveError}
+									<span class="rp-archive-error">{archiveError}</span>
+								{/if}
+							{/if}
+						{/if}
+					</div>
+				{/if}
+			</div>
 		</div>
 	</div>
+
+	<!-- Rules panel -->
+	{#if showRules}
+		<div class="rp-rules">
+			<div class="rp-rules-header">
+				<span class="rp-rules-title">Rules & Scoring</span>
+				<button class="rp-rules-close" onclick={() => (showRules = false)}>&times;</button>
+			</div>
+			<div class="rp-rules-body">
+				<div class="rp-rules-section">
+					<strong>Draft Rounds</strong>
+					<ul>
+						<li>Round 1 — Seeds 1–10 (ATP)</li>
+						<li>Rounds 2–3 — Seeds 11–32 (ATP)</li>
+						<li>Rounds 4–5 — Unseeded players (ATP)</li>
+						<li>Round 6 — WTA draw (any player)</li>
+					</ul>
+				</div>
+				<div class="rp-rules-section">
+					<strong>Scoring</strong>
+					<ul>
+						<li>1 point per match win</li>
+						<li>+1 bonus point for unseeded picks (rounds 4–5) with 3+ wins</li>
+					</ul>
+				</div>
+				<div class="rp-rules-section">
+					<strong>Format</strong>
+					<p>Snake draft — order reverses each round.</p>
+				</div>
+			</div>
+		</div>
+	{/if}
 
 	<!-- Teams grid -->
 	<div class="rp-grid">
@@ -233,6 +363,7 @@
 		--border-strong: rgba(0, 0, 0, 0.12);
 		--accent: #1a6b3c;
 		--accent-soft: #e8f4ed;
+		--btn-bg: #f5f4f1;
 
 		color: var(--text-primary);
 	}
@@ -317,22 +448,200 @@
 		border: 1px solid var(--border-strong);
 	}
 
-	.rp-archive-btn {
+	/* ── Menu dropdown ── */
+	.rp-menu-wrap {
+		position: relative;
+	}
+
+	.rp-menu-trigger {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 8px;
+		border: 1px solid var(--border-strong);
+		background: var(--btn-bg);
+		cursor: pointer;
+		transition: all 0.15s ease;
+		color: var(--text-secondary);
+	}
+
+	.rp-menu-trigger:hover {
+		background: var(--btn-bg);
+		color: var(--accent);
+		border-color: rgba(26, 107, 60, 0.3);
+	}
+
+	:global(.rp-menu-icon) {
+		width: 16px;
+		height: 16px;
+	}
+
+	.rp-dropdown {
+		position: absolute;
+		top: calc(100% + 6px);
+		right: 0;
+		min-width: 200px;
+		background: var(--surface);
+		border: 1px solid var(--border-strong);
+		border-radius: 10px;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+		z-index: 50;
+		padding: 4px;
+	}
+
+	.rp-dropdown-item {
+		display: block;
+		width: 100%;
+		text-align: left;
+		padding: 8px 12px;
 		font-size: 13px;
 		font-weight: 500;
-		padding: 6px 14px;
-		border-radius: 8px;
+		color: var(--text-primary);
+		background: none;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background 0.12s ease;
+	}
+
+	.rp-dropdown-item:hover {
+		background: var(--pill-bg);
+	}
+
+	.rp-dropdown-item.danger {
+		color: #a22525;
+	}
+
+	.rp-dropdown-item.danger:hover {
+		background: #fdf0f0;
+	}
+
+	.rp-dropdown-archive {
+		display: flex;
+		gap: 6px;
+		padding: 6px 8px;
+	}
+
+	.rp-archive-input {
+		font-size: 13px;
+		padding: 5px 10px;
+		border-radius: 6px;
 		border: 1px solid var(--border-strong);
 		background: var(--surface);
 		color: var(--text-primary);
-		cursor: pointer;
-		transition: all 0.15s ease;
+		flex: 1;
+		min-width: 0;
+		outline: none;
 	}
 
-	.rp-archive-btn:hover {
-		background: var(--accent-soft);
+	.rp-archive-input:focus {
 		border-color: var(--accent);
+	}
+
+	.rp-dropdown-confirm {
+		font-size: 12px;
+		font-weight: 600;
+		padding: 5px 10px;
+		border-radius: 6px;
+		border: 1px solid var(--accent);
+		background: var(--accent-soft);
 		color: var(--accent);
+		cursor: pointer;
+		white-space: nowrap;
+	}
+
+	.rp-dropdown-confirm:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.rp-archive-error {
+		font-size: 11px;
+		color: #c0392b;
+		padding: 2px 12px 6px;
+	}
+
+	/* ── Rules panel ── */
+	.rp-rules {
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		margin-bottom: 24px;
+		overflow: hidden;
+	}
+
+	.rp-rules-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 14px 20px;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.rp-rules-title {
+		font-size: 15px;
+		font-weight: 600;
+		color: var(--text-primary);
+	}
+
+	.rp-rules-close {
+		font-size: 20px;
+		line-height: 1;
+		background: none;
+		border: none;
+		color: var(--text-muted);
+		cursor: pointer;
+		padding: 0 4px;
+	}
+
+	.rp-rules-close:hover {
+		color: var(--text-primary);
+	}
+
+	.rp-rules-body {
+		padding: 16px 20px;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 20px;
+	}
+
+	.rp-rules-section strong {
+		display: block;
+		font-size: 12px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--text-muted);
+		margin-bottom: 8px;
+	}
+
+	.rp-rules-section ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.rp-rules-section li {
+		font-size: 13px;
+		color: var(--text-secondary);
+		padding: 3px 0;
+		padding-left: 14px;
+		position: relative;
+	}
+
+	.rp-rules-section li::before {
+		content: '•';
+		position: absolute;
+		left: 0;
+		color: var(--accent);
+	}
+
+	.rp-rules-section p {
+		font-size: 13px;
+		color: var(--text-secondary);
+		margin: 0;
 	}
 
 

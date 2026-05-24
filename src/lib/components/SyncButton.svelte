@@ -104,8 +104,12 @@
 </div>
 
 <style>
+	:global(.sync-trigger-btn) {
+		background-color: #f5f4f1 !important;
+	}
+
 	:global(.sync-trigger-btn:hover) {
-		background-color: #e8f4ed;
+		background-color: #f5f4f1 !important;
 		color: #1a6b3c;
 		border-color: rgba(26, 107, 60, 0.3);
 	}
