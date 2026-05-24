@@ -71,6 +71,10 @@ export const ATP_PLAYER_IDS: Record<string, string> = {
 	'stan wawrinka': 'w367',
 	'roberto bautista agut': 'bd06',
 	'mattia bellucci': 'b0gg',
+	'gael monfils': 'mc65',
+	'rafael jodar': 'j0dz',
+	'martin landaluce': 'l0il',
+	'alexander blockx': 'b0pg',
 	'rafael nadal': 'n409',
 	'roger federer': 'f324',
 	// Abbreviated aliases (for static players.ts data)
