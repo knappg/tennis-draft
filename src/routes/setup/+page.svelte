@@ -24,6 +24,7 @@
 	import { Avatar, AvatarFallback } from '$lib/components/ui/avatar';
 	import { Trash2, Shuffle, Play, Plus, RefreshCcw, Check } from '@lucide/svelte';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { TOURNAMENT_CATALOG } from '$lib/data/tournaments';
 	import SyncButton from '$lib/components/SyncButton.svelte';
 
@@ -46,9 +47,9 @@
 		teamName = '';
 	}
 
-	function handleStart() {
-		startDraft();
-		goto('/draft');
+	async function handleStart() {
+		await startDraft();
+		goto(`${base}/draft`);
 	}
 
 	async function handleSelectTournament(catalogId: string) {

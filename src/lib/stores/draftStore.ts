@@ -126,7 +126,7 @@ export function shuffleParticipants() {
 	});
 }
 
-export function startDraft() {
+export async function startDraft() {
 	const p = get(participants);
 	if (p.length === 0) return;
 
@@ -152,7 +152,7 @@ export function startDraft() {
 	};
 
 	draftState.set(newState);
-	fetch(`${base}/api/draft/start`, {
+	await fetch(`${base}/api/draft/start`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ state: newState })
