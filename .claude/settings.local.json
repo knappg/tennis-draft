@@ -24,7 +24,9 @@
       "Bash(python3:*)",
       "Bash(npx vitest:*)",
       "Bash(npm test:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(node scripts/wimbledon2026/generate.mjs)",
+      "Bash(npx prettier *)"
     ]
   }
 }

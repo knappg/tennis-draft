@@ -8,6 +8,7 @@ import {
 } from './draftQueries';
 import { db } from './db';
 import { fetchRankingsDraw, fetchTournamentResults } from './rapidapiClient';
+import { getStaticDraw } from '$lib/data/wimbledon2026';
 import {
 	ROUND_ORDER,
 	POINTS_PER_WIN,
@@ -18,8 +19,23 @@ import {
 import type { TournamentRound, PlayerTournamentPoints } from '$lib/types';
 
 /**
+ * Populate tournament_players from a committed static draw, if one exists for this
+ * tournament (e.g. Wimbledon 2026). Idempotent — safe to call on every load. Returns
+ * true when a static draw was applied, signalling callers to skip the rankings-draw API.
+ */
+export function loadStaticDrawIfPresent(tournamentId: string): boolean {
+	const players = getStaticDraw(tournamentId);
+	if (!players) return false;
+	const insert = db.transaction(() => {
+		for (const p of players) upsertTournamentPlayer(p);
+	});
+	insert();
+	return true;
+}
+
+/**
  * Full sync for one tournament half (ATP or WTA):
- * 1. Fetch rankings draw if no players stored yet
+ * 1. Populate the player draw (static draw if present, else live rankings via API)
  * 2. Fetch + upsert match results (also upserts players from result data)
  * 3. Recompute player_tournament_points
  */
@@ -29,12 +45,15 @@ export async function syncTournament(tournamentId: string): Promise<void> {
 
 	const tour = tournament.gender;
 
-	// Step 1 — always refresh player draw from rankings (updates images, rankings)
-	const players = await fetchRankingsDraw(tour, tournamentId);
-	const insert = db.transaction(() => {
-		for (const p of players) upsertTournamentPlayer(p);
-	});
-	insert();
+	// Step 1 — refresh the player draw. Prefer a committed static draw (authoritative
+	// seeds + rankings); otherwise derive the draw from live rankings via the API.
+	if (!loadStaticDrawIfPresent(tournamentId)) {
+		const players = await fetchRankingsDraw(tour, tournamentId);
+		const insert = db.transaction(() => {
+			for (const p of players) upsertTournamentPlayer(p);
+		});
+		insert();
+	}
 
 	// Step 2 — fetch results; upsert players seen in results + all matches
 	const { players: resultPlayers, matches } = await fetchTournamentResults(
@@ -108,15 +127,13 @@ export function recomputePoints(tournamentId: string): void {
 	// Get picks for this tournament to identify unseeded picks (draft rounds 4 & 5)
 	const picks = getPicksForTournament(tournamentId);
 	const unseededPickIds = new Set(
-		picks
-			.filter(p => UNSEEDED_DRAFT_ROUNDS.includes(p.draftRound))
-			.map(p => p.tennisPlayerId)
+		picks.filter((p) => UNSEEDED_DRAFT_ROUNDS.includes(p.draftRound)).map((p) => p.tennisPlayerId)
 	);
 
 	// Compute and upsert points for every player who appeared in results
 	const allPlayerIds = new Set([
 		...Object.keys(winsByPlayer),
-		...picks.map(p => p.tennisPlayerId)
+		...picks.map((p) => p.tennisPlayerId)
 	]);
 
 	const upsert = db.transaction(() => {

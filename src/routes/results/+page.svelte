@@ -202,7 +202,13 @@
 				</button>
 				{#if menuOpen}
 					<div class="rp-dropdown">
-						<button class="rp-dropdown-item" onclick={() => { showRules = !showRules; menuOpen = false; }}>
+						<button
+							class="rp-dropdown-item"
+							onclick={() => {
+								showRules = !showRules;
+								menuOpen = false;
+							}}
+						>
 							Rules & Scoring
 						</button>
 						{#if $draftState.status === 'results'}
@@ -319,7 +325,10 @@
 									</div>
 									<div class="rp-player-details">
 										<div class="rp-player-top">
-											<span class="rp-player-name {eliminatedPlayerIds.has(pickId) ? 'eliminated' : ''}">{player.name}</span>
+											<span
+												class="rp-player-name {eliminatedPlayerIds.has(pickId) ? 'eliminated' : ''}"
+												>{player.name}</span
+											>
 											<span class="rp-player-pts {pts > 0 ? 'has-pts' : 'no-pts'}">
 												{pts > 0 ? `+${pts}` : '—'}
 											</span>
@@ -331,12 +340,15 @@
 											{:else}
 												<span class="rp-pill unseeded">Unseeded</span>
 											{/if}
+											{#if player.currentRanking != null}
+												<span class="rp-pill rank" title="Ranking entering the tournament"
+													>#{player.currentRanking}</span
+												>
+											{/if}
 											{#if player.tour === 'wta'}
 												<span class="rp-pill wta">WTA</span>
 											{/if}
-											<span class="rp-pill wins-pill {wins > 0 ? 'active' : 'zero'}"
-												>{wins}W</span
-											>
+											<span class="rp-pill wins-pill {wins > 0 ? 'active' : 'zero'}">{wins}W</span>
 											{#if round}
 												<span class="rp-round">{round}</span>
 											{/if}
@@ -644,7 +656,6 @@
 		margin: 0;
 	}
 
-
 	/* ── Grid ── */
 	.rp-grid {
 		display: grid;
@@ -889,6 +900,12 @@
 		border: 1px solid rgba(201, 168, 76, 0.25);
 	}
 
+	.rp-pill.rank {
+		background: var(--pill-bg);
+		color: var(--text-muted);
+		font-family: 'DM Mono', monospace;
+	}
+
 	.rp-pill.wta {
 		background: #fdf0f8;
 		color: #c0448e;
@@ -929,5 +946,4 @@
 			transform: translateY(0);
 		}
 	}
-
 </style>

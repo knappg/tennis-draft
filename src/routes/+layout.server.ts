@@ -5,11 +5,18 @@ import {
 	getTournamentById,
 	getTournamentPlayers
 } from '$lib/server/draftQueries';
+import { loadStaticDrawIfPresent } from '$lib/server/syncService';
 import { TENNIS_PLAYERS } from '$lib/data/players';
 
 export function load() {
 	const serverState = getDraftState();
 	const { tournamentId, wtaTournamentId } = serverState;
+
+	// Self-populate the draft pool from any committed static draw (e.g. Wimbledon 2026)
+	// for the active tournaments. Idempotent; ensures a fresh DB (incl. the production
+	// server) is seeded purely from the committed file, with no manual import step.
+	if (tournamentId) loadStaticDrawIfPresent(tournamentId);
+	if (wtaTournamentId) loadStaticDrawIfPresent(wtaTournamentId);
 
 	const serverParticipants = getParticipants(tournamentId);
 	const serverDraftedMap = getDraftedPlayersMap(tournamentId);

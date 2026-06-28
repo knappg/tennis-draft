@@ -25,6 +25,7 @@
 	import { base } from '$app/paths';
 	import { fade, scale } from 'svelte/transition';
 	import { getRoundLabel } from '$lib/data/tournamentPoints';
+	import { getFirstRoundOpponent } from '$lib/data/wimbledon2026';
 
 	import type { PlayerTournamentPoints, TournamentMatch } from '$lib/types';
 
@@ -47,8 +48,16 @@
 
 		const ids = [atpId, wtaId].filter(Boolean) as string[];
 		const [scoresResults, bracketResults] = await Promise.all([
-			Promise.all(ids.map(id => fetch(`${base}/api/tournament/scores?tournamentId=${id}`).then(r => r.json()))),
-			Promise.all(ids.map(id => fetch(`${base}/api/tournament/bracket?tournamentId=${id}`).then(r => r.json())))
+			Promise.all(
+				ids.map((id) =>
+					fetch(`${base}/api/tournament/scores?tournamentId=${id}`).then((r) => r.json())
+				)
+			),
+			Promise.all(
+				ids.map((id) =>
+					fetch(`${base}/api/tournament/bracket?tournamentId=${id}`).then((r) => r.json())
+				)
+			)
 		]);
 
 		const merged: Record<string, PlayerTournamentPoints> = {};
@@ -57,7 +66,7 @@
 
 		const eliminated = new Set<string>();
 		for (const matches of bracketResults) {
-			for (const m of (matches as TournamentMatch[])) {
+			for (const m of matches as TournamentMatch[]) {
 				if (m.winnerId) {
 					if (m.player1Id !== m.winnerId) eliminated.add(m.player1Id);
 					if (m.player2Id !== m.winnerId) eliminated.add(m.player2Id);
@@ -96,7 +105,7 @@
 	}
 
 	function getPlayerById(id: string) {
-		return $allPlayers.find(p => p.id === id);
+		return $allPlayers.find((p) => p.id === id);
 	}
 
 	function getSeedLabel(player: { seed: number | null; currentRanking: number | null }): string {
@@ -234,6 +243,7 @@
 
 		<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
 			{#each $availablePlayers as player (player.id)}
+				{@const firstRoundOpponent = getFirstRoundOpponent(player.id)}
 				<button
 					onclick={() => handleStage(player.id)}
 					class="text-left group relative transition-all duration-200 outline-none focus:ring-2 ring-primary rounded-lg overflow-hidden border bg-card hover:shadow-md
@@ -279,6 +289,15 @@
 								>{player.currentRanking != null ? `#${player.currentRanking}` : '—'}</span
 							>
 						</div>
+						{#if firstRoundOpponent}
+							<p
+								class="mt-1.5 text-[10px] text-muted-foreground/80 truncate"
+								title="First-round opponent"
+							>
+								<span class="font-semibold text-muted-foreground">Plays</span>
+								{firstRoundOpponent}
+							</p>
+						{/if}
 					</div>
 				</button>
 			{/each}

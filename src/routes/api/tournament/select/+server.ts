@@ -7,6 +7,7 @@ import {
 	getTournamentPlayers
 } from '$lib/server/draftQueries';
 import { TOURNAMENT_CATALOG, makeTournamentId, getWtaCounterpart } from '$lib/data/tournaments';
+import { loadStaticDrawIfPresent } from '$lib/server/syncService';
 import type { Tournament } from '$lib/types';
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -17,7 +18,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		error(400, 'Missing catalogId or year');
 	}
 
-	const entry = TOURNAMENT_CATALOG.find(e => e.id === catalogId);
+	const entry = TOURNAMENT_CATALOG.find((e) => e.id === catalogId);
 	if (!entry) {
 		error(400, `Unknown tournament catalogId: ${catalogId}`);
 	}
@@ -59,6 +60,11 @@ export const POST: RequestHandler = async ({ request }) => {
 	upsertTournament(existingWta ? { ...existingWta, apiId: wtaBase.apiId } : wtaBase);
 
 	setActiveTournament(atpId, wtaId);
+
+	// Populate the draft pool immediately from a committed static draw (e.g. Wimbledon
+	// 2026) so players are available without waiting for the first API sync.
+	loadStaticDrawIfPresent(atpId);
+	loadStaticDrawIfPresent(wtaId);
 
 	const atpTournament = getTournamentById(atpId)!;
 	const wtaTournament = getTournamentById(wtaId)!;

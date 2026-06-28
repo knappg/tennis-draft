@@ -155,7 +155,7 @@ export function getParticipants(tournamentId?: string | null): Participant[] {
 		picksByParticipant[pick.participant_id].push(pick.tennis_player_id);
 	}
 
-	return rows.map(row => ({
+	return rows.map((row) => ({
 		id: row.id,
 		name: row.name,
 		teamName: row.team_name,
@@ -316,9 +316,10 @@ export function upsertTournament(t: Tournament): void {
 }
 
 export function setActiveTournament(tournamentId: string, wtaTournamentId: string): void {
-	db.prepare(
-		`UPDATE draft_state SET tournament_id = ?, wta_tournament_id = ? WHERE id = 1`
-	).run(tournamentId, wtaTournamentId);
+	db.prepare(`UPDATE draft_state SET tournament_id = ?, wta_tournament_id = ? WHERE id = 1`).run(
+		tournamentId,
+		wtaTournamentId
+	);
 }
 
 export function getActiveTournamentIds(): {
@@ -358,8 +359,8 @@ export function upsertTournamentPlayer(p: TennisPlayer): void {
 		   seed            = COALESCE(excluded.seed, tournament_players.seed),
 		   country         = excluded.country,
 		   image_url       = excluded.image_url,
-		   current_ranking = excluded.current_ranking,
-		   atp_player_id   = excluded.atp_player_id,
+		   current_ranking = COALESCE(excluded.current_ranking, tournament_players.current_ranking),
+		   atp_player_id   = COALESCE(excluded.atp_player_id, tournament_players.atp_player_id),
 		   api_id          = excluded.api_id`
 	).run({
 		id: p.id,
@@ -383,7 +384,7 @@ export function getTournamentResults(tournamentId: string): TournamentMatch[] {
 			'SELECT * FROM tournament_results WHERE tournament_id = ? ORDER BY round, match_number'
 		)
 		.all(tournamentId) as TournamentResultRow[];
-	return rows.map(r => ({
+	return rows.map((r) => ({
 		id: r.id,
 		tournamentId: r.tournament_id,
 		round: r.round as TournamentRound,
@@ -493,9 +494,7 @@ export function getPicksForTournament(
 	tournamentId: string
 ): Array<{ tennisPlayerId: string; draftRound: number }> {
 	const rows = db
-		.prepare(
-			'SELECT tennis_player_id, draft_round FROM picks WHERE tournament_id = ?'
-		)
+		.prepare('SELECT tennis_player_id, draft_round FROM picks WHERE tournament_id = ?')
 		.all(tournamentId) as Array<{ tennis_player_id: string; draft_round: number }>;
-	return rows.map(r => ({ tennisPlayerId: r.tennis_player_id, draftRound: r.draft_round }));
+	return rows.map((r) => ({ tennisPlayerId: r.tennis_player_id, draftRound: r.draft_round }));
 }

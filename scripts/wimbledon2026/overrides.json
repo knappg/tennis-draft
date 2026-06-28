@@ -1,0 +1,29 @@
+{
+  "_comment": "Manual name→RapidAPI-name resolutions for draw entries that are ambiguous (same surname as another player) or whose official-draw spelling doesn't auto-match the API. Keys are 1-based draw positions in draw-{atp,wta}.json. rankAlias maps a RapidAPI name to the (shorter) name used in the live-tennis.eu ranking dump so the live ranking attaches.",
+  "atp": {
+    "24": "tommy paul",
+    "42": "juan manuel cerundolo",
+    "63": "yibing wu",
+    "70": "zachary svajda",
+    "74": "billy harris",
+    "86": "matteo berrettini",
+    "100": "mackenzie mcdonald",
+    "111": "thanasi kokkinakis",
+    "119": "jaume antoni munar clar",
+    "120": "francisco cerundolo"
+  },
+  "wta": {
+    "11": "mingge xu",
+    "30": "hannah klugman",
+    "50": "mika stojsavljevic",
+    "51": "xinyu wang",
+    "74": "paula badosa gibert",
+    "79": "nadia podoroska",
+    "91": "venus williams",
+    "109": "maria camila osorio serrano"
+  },
+  "rankAlias": {
+    "paula badosa gibert": "paula badosa",
+    "maria camila osorio serrano": "camila osorio"
+  }
+}
