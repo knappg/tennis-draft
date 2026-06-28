@@ -5,7 +5,8 @@
 		participants,
 		availablePlayers,
 		allPlayers,
-		makePick
+		makePick,
+		refreshDraftFromServer
 	} from '$lib/stores/draftStore';
 	import { Button } from '$lib/components/ui/button';
 	import {
@@ -38,6 +39,21 @@
 	$effect(() => {
 		if ($draftState.isComplete) {
 			goto(`${base}/results`);
+		}
+	});
+
+	// Poll the server every 15s so anyone with the draft board open sees picks made by
+	// others in near-real-time. The store guards against reverting an in-flight local pick.
+	$effect(() => {
+		const interval = setInterval(refreshDraftFromServer, 15_000);
+		return () => clearInterval(interval);
+	});
+
+	// If a remote pick (or round change) takes the staged player off the board, unstage it
+	// so Lock In can't draft an already-taken player.
+	$effect(() => {
+		if (stagedPlayerId && !$availablePlayers.some((p) => p.id === stagedPlayerId)) {
+			stagedPlayerId = null;
 		}
 	});
 

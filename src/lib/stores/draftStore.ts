@@ -87,6 +87,38 @@ export function initFromServer(
 	activeTournament.set(serverTournament);
 }
 
+/**
+ * Pull the latest draft snapshot from the server and apply it, so clients with the
+ * /draft board open see picks made by others in near-real-time (polled, not pushed).
+ *
+ * Guarded against clobbering an in-flight local optimistic pick: if the server snapshot
+ * has *fewer* drafted players than we do locally, our own just-made pick hasn't been
+ * persisted/read back yet, so we skip this round and let the next poll reconcile.
+ */
+export async function refreshDraftFromServer() {
+	if (!browser) return;
+	let payload: {
+		state: DraftState;
+		participants: Participant[];
+		draftedMap: Record<string, string>;
+	};
+	try {
+		const res = await fetch(`${base}/api/draft`);
+		if (!res.ok) return;
+		payload = await res.json();
+	} catch {
+		return; // transient network/server error — try again next poll
+	}
+
+	const localCount = Object.keys(get(draftedPlayers)).length;
+	const serverCount = Object.keys(payload.draftedMap ?? {}).length;
+	if (serverCount < localCount) return;
+
+	participants.set(payload.participants);
+	draftState.set(payload.state);
+	draftedPlayers.set(payload.draftedMap);
+}
+
 // ─── Actions ──────────────────────────────────────────────────────────────────
 
 export function addParticipant(name: string, teamName: string, icon: string) {
