@@ -45,7 +45,10 @@ export const availablePlayers = derived(
 		const rule = DRAFT_ROUND_RULES[round];
 		if (!rule) return [];
 		const pool = rule.tour === 'wta' ? $wta : $atp;
-		return pool.filter(p => !draftedIds.has(p.id) && isEligible(p.seed, round));
+		return pool
+			.filter(p => !draftedIds.has(p.id) && isEligible(p.seed, round))
+			// Players with no known ranking sink to the bottom (stable otherwise).
+			.sort((a, b) => (a.currentRanking == null ? 1 : 0) - (b.currentRanking == null ? 1 : 0));
 	}
 );
 

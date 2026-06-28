@@ -120,8 +120,33 @@ function rowToTennisPlayer(row: TournamentPlayerRow): TennisPlayer {
 
 // ─── Read (original 8 functions, updated for new schema) ─────────────────────
 
+/** The single source-of-truth draft_state row always lives at id = 1. */
+const DEFAULT_DRAFT_STATE: DraftState = {
+	currentRound: 1,
+	currentPickIndex: 0,
+	snakeOrder: [],
+	isComplete: false,
+	status: 'setup',
+	tournamentId: null,
+	wtaTournamentId: null
+};
+
 export function getDraftState(): DraftState {
-	const row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as DraftStateRow;
+	let row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as
+		| DraftStateRow
+		| undefined;
+
+	// The draft_state row (id = 1) is missing — e.g. the table was truncated.
+	// Re-seed it (matching the schema defaults) so this read and any later
+	// `UPDATE ... WHERE id = 1` writes work, instead of throwing a 500.
+	if (!row) {
+		db.prepare('INSERT OR IGNORE INTO draft_state (id) VALUES (1)').run();
+		row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as
+			| DraftStateRow
+			| undefined;
+	}
+	if (!row) return { ...DEFAULT_DRAFT_STATE };
+
 	return {
 		currentRound: row.current_round,
 		currentPickIndex: row.current_pick_idx,

@@ -26,7 +26,9 @@
       "Bash(npm test:*)",
       "Bash(curl:*)",
       "Bash(node scripts/wimbledon2026/generate.mjs)",
-      "Bash(npx prettier *)"
+      "Bash(npx prettier *)",
+      "Bash(kill 78196 78219)",
+      "Bash(lsof -nP -iTCP -sTCP:LISTEN)"
     ]
   }
 }
