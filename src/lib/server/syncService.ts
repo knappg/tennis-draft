@@ -8,7 +8,7 @@ import {
 } from './draftQueries';
 import { db } from './db';
 import { fetchRankingsDraw, fetchTournamentResults } from './rapidapiClient';
-import { getStaticDraw } from '$lib/data/wimbledon2026';
+import { getStaticDraw } from '$lib/data/staticDraws';
 import {
 	ROUND_ORDER,
 	POINTS_PER_WIN,

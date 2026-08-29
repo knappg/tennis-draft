@@ -26,7 +26,7 @@
 	import { base } from '$app/paths';
 	import { fade, scale } from 'svelte/transition';
 	import { getRoundLabel } from '$lib/data/tournamentPoints';
-	import { getFirstRoundOpponent } from '$lib/data/wimbledon2026';
+	import { getFirstRoundOpponent } from '$lib/data/staticDraws';
 
 	import type { PlayerTournamentPoints, TournamentMatch } from '$lib/types';
 
@@ -259,7 +259,7 @@
 
 		<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
 			{#each $availablePlayers as player (player.id)}
-				{@const firstRoundOpponent = getFirstRoundOpponent(player.id)}
+				{@const firstRoundOpponent = getFirstRoundOpponent(player.id, player.tournamentId)}
 				<button
 					onclick={() => handleStage(player.id)}
 					class="text-left group relative transition-all duration-200 outline-none focus:ring-2 ring-primary rounded-lg overflow-hidden border bg-card hover:shadow-md
