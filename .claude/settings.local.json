@@ -28,7 +28,15 @@
       "Bash(node scripts/wimbledon2026/generate.mjs)",
       "Bash(npx prettier *)",
       "Bash(kill 78196 78219)",
-      "Bash(lsof -nP -iTCP -sTCP:LISTEN)"
+      "Bash(lsof -nP -iTCP -sTCP:LISTEN)",
+      "Bash(git stash *)",
+      "Bash(npm run *)",
+      "Bash(echo \"started dev, pid $!\")",
+      "Bash(node -e ' *)",
+      "Bash(kill 22144)",
+      "Bash(awk -F'|' '{print $2}')",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
