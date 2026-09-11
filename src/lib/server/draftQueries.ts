@@ -132,18 +132,14 @@ const DEFAULT_DRAFT_STATE: DraftState = {
 };
 
 export function getDraftState(): DraftState {
-	let row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as
-		| DraftStateRow
-		| undefined;
+	let row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as DraftStateRow | undefined;
 
 	// The draft_state row (id = 1) is missing — e.g. the table was truncated.
 	// Re-seed it (matching the schema defaults) so this read and any later
 	// `UPDATE ... WHERE id = 1` writes work, instead of throwing a 500.
 	if (!row) {
 		db.prepare('INSERT OR IGNORE INTO draft_state (id) VALUES (1)').run();
-		row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as
-			| DraftStateRow
-			| undefined;
+		row = db.prepare('SELECT * FROM draft_state WHERE id = 1').get() as DraftStateRow | undefined;
 	}
 	if (!row) return { ...DEFAULT_DRAFT_STATE };
 
@@ -445,6 +441,30 @@ export function upsertTournamentResult(
 		apiMatchId: (match as { apiMatchId?: string }).apiMatchId ?? null,
 		playedAt: match.playedAt ?? null
 	});
+}
+
+/**
+ * Collapse duplicate rows for the same tournament + player pair, keeping the one whose
+ * scoreline records a retirement (the API returns retired matches twice — see
+ * `dedupeMatches` in rapidapiClient). Two players meet at most once in a draw, so any
+ * other row for that pair is a duplicate left over from an earlier sync.
+ */
+export function pruneDuplicateResults(tournamentId: string): void {
+	db.prepare(
+		`DELETE FROM tournament_results
+		 WHERE tournament_id = @tournamentId
+		   AND id NOT IN (
+		     SELECT id FROM (
+		       SELECT id, ROW_NUMBER() OVER (
+		         PARTITION BY MIN(player1_id, player2_id), MAX(player1_id, player2_id)
+		         ORDER BY CASE WHEN LOWER(COALESCE(score, '')) LIKE '%ret%' THEN 0 ELSE 1 END, id
+		       ) AS rn
+		       FROM tournament_results
+		       WHERE tournament_id = @tournamentId
+		     )
+		     WHERE rn = 1
+		   )`
+	).run({ tournamentId });
 }
 
 // ─── Player Tournament Points ─────────────────────────────────────────────────

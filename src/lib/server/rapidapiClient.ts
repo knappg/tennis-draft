@@ -83,7 +83,7 @@ export async function fetchRankingsDraw(
 
 	const entries = [...(page1?.data ?? []), ...(page2?.data ?? [])];
 
-	return entries.map(e => {
+	return entries.map((e) => {
 		const seed = e.position <= 32 ? e.position : null;
 		const atpPlayerId = tour === 'atp' ? lookupAtpPlayerId(e.player.name) : undefined;
 		return {
@@ -93,12 +93,38 @@ export async function fetchRankingsDraw(
 			currentRanking: e.position,
 			country: e.player.countryAcr ?? '',
 			image: getPlayerImageUrl(e.player.name, tour, atpPlayerId),
-				tour,
+			tour,
 			atpPlayerId,
 			apiId: String(e.player.id),
 			tournamentId
 		};
 	});
+}
+
+/** Matches a retirement marker in a scoreline, e.g. "6-3 1-0 Ret." */
+export function isRetirementScore(score: string | null | undefined): boolean {
+	return !!score && /\bret\b/i.test(score);
+}
+
+/**
+ * The API reports a retired match twice — once with "Ret." in the scoreline and once
+ * without — which would double-count the winner. Two players can only meet once in a
+ * single-elimination draw, so collapse rows sharing a tournament + player pair,
+ * keeping the row that records the retirement.
+ */
+export function dedupeMatches<
+	T extends { tournamentId: string; player1Id: string; player2Id: string; score: string | null }
+>(matches: T[]): T[] {
+	const byPair = new Map<string, T>();
+	for (const m of matches) {
+		const [a, b] = [m.player1Id, m.player2Id].sort();
+		const key = `${m.tournamentId}|${a}|${b}`;
+		const kept = byPair.get(key);
+		if (!kept || (isRetirementScore(m.score) && !isRetirementScore(kept.score))) {
+			byPair.set(key, m);
+		}
+	}
+	return Array.from(byPair.values());
 }
 
 /**
@@ -131,7 +157,7 @@ export async function fetchTournamentResults(
 					currentRanking: null,
 					country: p.countryAcr ?? '',
 					image: getPlayerImageUrl(p.name, tour, atpPlayerId),
-								tour,
+					tour,
 					atpPlayerId,
 					apiId: String(p.id),
 					tournamentId
@@ -140,19 +166,21 @@ export async function fetchTournamentResults(
 		}
 	}
 
-	const matches = singles
-		.filter(m => m.match_winner != null)
-		.map(m => ({
-			tournamentId,
-			round: normalizeRoundId(m.roundId),
-			matchNumber: null,
-			player1Id: String(m.player1Id),
-			player2Id: String(m.player2Id),
-			winnerId: String(m.match_winner),
-			score: m.result ?? null,
-			apiMatchId: m.id,
-			playedAt: m.date ?? null
-		}));
+	const matches = dedupeMatches(
+		singles
+			.filter((m) => m.match_winner != null)
+			.map((m) => ({
+				tournamentId,
+				round: normalizeRoundId(m.roundId),
+				matchNumber: null,
+				player1Id: String(m.player1Id),
+				player2Id: String(m.player2Id),
+				winnerId: String(m.match_winner),
+				score: m.result ?? null,
+				apiMatchId: m.id,
+				playedAt: m.date ?? null
+			}))
+	);
 
 	return { players: Array.from(playerMap.values()), matches };
 }

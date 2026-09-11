@@ -4,7 +4,8 @@ import {
 	upsertTournamentResult,
 	upsertPlayerPoints,
 	getPicksForTournament,
-	upsertTournament
+	upsertTournament,
+	pruneDuplicateResults
 } from './draftQueries';
 import { db } from './db';
 import { fetchRankingsDraw, fetchTournamentResults } from './rapidapiClient';
@@ -64,6 +65,8 @@ export async function syncTournament(tournamentId: string): Promise<void> {
 	const insertData = db.transaction(() => {
 		for (const p of resultPlayers) upsertTournamentPlayer(p);
 		for (const m of matches) upsertTournamentResult(m);
+		// Drop rows kept under a different api_match_id by earlier syncs (pre-dedupe)
+		pruneDuplicateResults(tournamentId);
 	});
 	insertData();
 
@@ -81,14 +84,14 @@ export async function syncTournament(tournamentId: string): Promise<void> {
  *   - +1 bonus for unseeded picks (draft rounds 4-5) with 2+ wins
  */
 export function recomputePoints(tournamentId: string): void {
-	// Count wins per player, deduplicating by match content (player pair + score)
-	// to handle duplicate API rows for the same match with different api_match_id
-	// or different round values (e.g. R128 vs R64 for the same physical match).
+	// Count wins per player, deduplicating by player pair: two players meet at most once
+	// in a draw, so any extra row is a duplicate API record for the same physical match
+	// (a different api_match_id, a different round, or a "Ret." twin of the scoreline).
 	const winRows = db
 		.prepare(
 			`WITH deduped AS (
 				SELECT DISTINCT winner_id,
-					MIN(player1_id, player2_id) || '|' || MAX(player1_id, player2_id) || '|' || COALESCE(score, CAST(id AS TEXT)) AS match_key
+					MIN(player1_id, player2_id) || '|' || MAX(player1_id, player2_id) AS match_key
 				FROM tournament_results
 				WHERE tournament_id = ? AND winner_id IS NOT NULL
 					AND (winner_id = player1_id OR winner_id = player2_id)
